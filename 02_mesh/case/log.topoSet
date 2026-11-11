@@ -1,0 +1,49 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2606                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _481094f-20260618 OPENFOAM=2606 version=2606
+Arch   : "LSB;label=32;scalar=64"
+Exec   : topoSet -constant
+Date   : Nov 11 2026
+Time   : 16:39:11
+Host   : grb-CRFL
+PID    : 64991
+I/O    : uncollated
+Case   : /home/grb_crfl/work/SCR/3layer/02_mesh/case
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+memory pool : not available
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+
+--> FOAM Warning : allowSystemOperations : Allowing user-supplied system call operations.
+                   This can be a security risk if running untrusted cases
+                   through e.g. 'coded' on-the-fly-compilation functionality.
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Create polyMesh for time = constant
+
+Reading topoSetDict
+
+Time = constant
+    mesh not changed.
+Created cellZoneSet catalyst_1
+    Applying source boxToCell
+    Adding cells with centre within boxes 1((-0.55 -0.55 2.1) (0.55 0.55 2.7))
+    cellZoneSet catalyst_1 now size 33298
+Created cellZoneSet catalyst_2
+    Applying source boxToCell
+    Adding cells with centre within boxes 1((-0.55 -0.55 1.15) (0.55 0.55 1.75))
+    cellZoneSet catalyst_2 now size 29790
+Created cellZoneSet catalyst_3
+    Applying source boxToCell
+    Adding cells with centre within boxes 1((-0.55 -0.55 0.2) (0.55 0.55 0.8))
+    cellZoneSet catalyst_3 now size 30139
+
+End
+

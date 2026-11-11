@@ -1,0 +1,49 @@
+# =====================================================================
+# 격자 사양 (mesh_spec.yaml) - snappyHexMesh
+# ---------------------------------------------------------------------
+# - 형상 정보는 ../01_geometry/out/geometry_out.json 에서 자동으로 읽음
+#   (여기서는 형상 치수를 다시 적지 않음)
+# - status: given / assumed / estimated (형상 spec과 같은 의미)
+# =====================================================================
+
+meta:
+  revision: 0
+  note: "검증 케이스용 초기 격자. 셀 수를 작게 시작해서 전체 흐름부터 확인"
+
+input:
+  geometry_dir: ../01_geometry
+  stl: out/fluid.stl
+  info: out/geometry_out.json
+
+background:                      # blockMesh 배경 격자
+  cell_size: {value: 0.05, status: assumed,
+              note: "촉매층 경계 z(0.2, 0.8, 1.15, 1.75, 2.1, 2.7)가 격자면과 정확히 맞도록 0.05 m 배수로 선택"}
+  margin_cells: 1                # 형상 bbox 바깥 여유 셀 수
+
+refinement:                      # 레벨 n → 셀 크기 = cell_size / 2^n
+  default_wall: [1, 1]           # [최소, 최대] 레벨
+  per_patch:                     # 패치별로 다르게 줄 때만 적음
+    wall_diffuser: [1, 2]        # 원→사각 전이부: 곡률이 커서 한 단계 더
+  inlet_outlet: [1, 1]
+  feature_level: 2               # 날카로운 모서리(덕트-하우징 접합부 등)
+  feature_angle: 150             # surfaceFeatureExtract includedAngle
+  resolve_feature_angle: 30
+  n_cells_between_levels: 3
+  catalyst_level: 0              # 촉매층 내부 추가 세분화 (0 = 없음)
+
+layers:                          # 벽면 경계층 (2단계: 먼저 레이어 없이 성공시킨 뒤 추가)
+  enabled: true
+  patches: walls                 # walls = geometry_out.json의 모든 wall 패치
+  n_layers: {value: 3, status: assumed}
+  expansion_ratio: 1.2
+  final_layer_thickness: 0.4     # 상대값 (인접 셀 크기 대비)
+  min_thickness: 0.1
+  target_coverage: 80            # [%] 이 값 미만이면 WARN
+
+quality:                         # 합격 기준 (checkMesh)
+  max_non_ortho: 65
+  max_skewness: 4.0
+  max_cells: 3000000             # snappy maxGlobalCells (셀 수 상한, 넘으면 세분화가 멈춤)
+
+parallel:
+  n_procs: 1                     # 1 = 직렬. 셀 100만 이상이면 8부터 시작해 8/12/16 비교

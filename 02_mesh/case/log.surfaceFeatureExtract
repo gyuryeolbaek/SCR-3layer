@@ -1,0 +1,90 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2606                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _481094f-20260618 OPENFOAM=2606 version=2606
+Arch   : "LSB;label=32;scalar=64"
+Exec   : surfaceFeatureExtract
+Date   : Nov 11 2026
+Time   : 16:38:21
+Host   : grb-CRFL
+PID    : 64567
+I/O    : uncollated
+Case   : /home/grb_crfl/work/SCR/3layer/02_mesh/case
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+memory pool : not available
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+
+--> FOAM Warning : allowSystemOperations : Allowing user-supplied system call operations.
+                   This can be a security risk if running untrusted cases
+                   through e.g. 'coded' on-the-fly-compilation functionality.
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+
+Note: Feature line extraction only valid on closed manifold surfaces
+
+Reading surfaceFeatureExtractDict
+
+Surfaces     : fluid.stl
+Output       : fluid
+Load options : offset
+Write options: writeObj=yes writeVTK=off
+
+Statistics:
+Triangles    : 3092 in 6 region(s)
+Vertices     : 1548
+Bounding Box : (-0.5 -0.5 -2.299999952) (0.5 0.5 4.699999809)
+
+Constructing feature set from included angle 150
+Selecting edges based purely on geometric tests: no
+Removing all non-manifold edges (edges with > 2 connected faces) unless they cross multiple regions
+
+Initial Feature set:
+    points : 12
+    edges  : 523
+    of which
+        region edges   : 511
+        external edges : 12
+        internal edges : 0
+
+Final Feature set:
+    points : 515
+    of which
+        convex             : 8
+        concave            : 0
+        mixed              : 4
+        non-feature        : 503
+    edges  : 523
+    of which
+        external edges     : 269
+        internal edges     : 254
+        flat edges         : 0
+        open edges         : 0
+        multiply connected : 0
+
+Writing extendedFeatureEdgeMesh to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid.extendedFeatureEdgeMesh"
+
+Writing extendedEdgeMesh components to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid"
+Writing 8 convex feature points to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid_convexFeaturePts.obj"
+Writing 0 concave feature points to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid_concaveFeaturePts.obj"
+Writing 4 mixed feature points to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid_mixedFeaturePts.obj"
+Writing 4 mixed feature point structure to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid_mixedFeaturePtsStructure.obj"
+Writing 269 external edges to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid_externalEdges.obj"
+Writing 254 internal edges to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid_internalEdges.obj"
+Writing 0 flat edges to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid_flatEdges.obj"
+Writing 0 open edges to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid_openEdges.obj"
+Writing 0 multiple edges to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid_multipleEdges.obj"
+Writing 511 region edges to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid_regionEdges.obj"
+Writing 523 edge directions to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/extendedFeatureEdgeMesh/fluid_edgeDirections.obj"
+
+Writing featureEdgeMesh to "/home/grb_crfl/work/SCR/3layer/02_mesh/case/constant/triSurface/fluid.eMesh"
+ExecutionTime = 0.01 s  ClockTime = 0 s
+
+End
+

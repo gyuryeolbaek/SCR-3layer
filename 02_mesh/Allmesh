@@ -1,0 +1,61 @@
+#!/bin/bash
+# 격자 단계 전체 실행: mesh_spec → case 생성 → blockMesh → snappy → (layers) → topoSet → 검증 보고서
+# 사용법: ./Allmesh [mesh_spec.yaml]
+set -e
+cd "$(dirname "$0")"
+SPEC="${1:-mesh_spec.yaml}"
+
+# --- 진입 조건 -------------------------------------------------------------
+if [ ! -f ../01_geometry/GEOMETRY_APPROVED ]; then
+    echo "[STOP] ../01_geometry/GEOMETRY_APPROVED 없음 → 형상 승인 후 진행"; exit 1
+fi
+command -v blockMesh >/dev/null || { echo "[STOP] OpenFOAM 환경이 로드되지 않음"; exit 1; }
+if [ -z "$VIRTUAL_ENV" ] && [ -f ~/venvs/cfd/bin/activate ]; then source ~/venvs/cfd/bin/activate; fi
+
+if [ -f MESH_APPROVED ]; then
+    echo "[INFO] 격자 재생성으로 기존 승인(MESH_APPROVED)을 해제합니다."
+    rm -f MESH_APPROVED
+fi
+
+rm -rf report
+python3 scripts/make_mesh_case.py "$SPEC" --case case
+cd case
+source mesh_run.env
+
+run() {   # run <로그이름> <명령...>
+    local name=$1; shift
+    echo "[RUN] $*  (log.$name)"
+    if ! "$@" > "log.$name" 2>&1; then
+        echo "[FAIL] $name 실패 → 02_mesh/case/log.$name 확인"; exit 1
+    fi
+}
+
+run blockMesh blockMesh
+run surfaceFeatureExtract surfaceFeatureExtract
+
+if [ "$N_PROCS" -gt 1 ]; then
+    run decomposePar decomposePar -force
+    run snappyHexMesh mpirun -np "$N_PROCS" snappyHexMesh -parallel -overwrite
+    echo "[RUN] checkMesh -parallel (log.checkMesh.noLayers)"; mpirun -np "$N_PROCS" checkMesh -parallel -constant > log.checkMesh.noLayers 2>&1 || true
+    if [ "$LAYERS" = "1" ]; then
+        run snappyHexMesh.layers mpirun -np "$N_PROCS" snappyHexMesh -parallel -overwrite -dict system/snappyHexMeshDict.layers
+    fi
+    run reconstructParMesh reconstructParMesh -constant
+    rm -rf processor*
+else
+    run snappyHexMesh snappyHexMesh -overwrite
+    echo "[RUN] checkMesh  (log.checkMesh.noLayers)"; checkMesh -constant > log.checkMesh.noLayers 2>&1 || true
+    if [ "$LAYERS" = "1" ]; then
+        run snappyHexMesh.layers snappyHexMesh -overwrite -dict system/snappyHexMeshDict.layers
+    fi
+fi
+
+run topoSet topoSet -constant
+# checkMesh 판정은 보고서(check_mesh.py)에서 하므로 종료 코드를 무시
+echo "[RUN] checkMesh  (log.checkMesh: 판정용 표준 검사)"
+checkMesh -constant > log.checkMesh 2>&1 || true
+echo "[RUN] checkMesh -allGeometry -allTopology  (log.checkMesh.all: 참고용 추가 검사)"
+checkMesh -constant -allGeometry -allTopology > log.checkMesh.all 2>&1 || true
+
+cd ..
+python3 scripts/check_mesh.py --case case
