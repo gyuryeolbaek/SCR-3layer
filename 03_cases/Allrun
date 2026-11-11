@@ -1,0 +1,30 @@
+#!/bin/bash
+# 계산 단계 실행: case_spec → 케이스 생성 → (병렬) 솔버 → 결과 검증 보고서
+# 사용법: ./Allrun [case_spec.yaml] [--force]
+#   --force : 같은 이름의 케이스에 결과가 있어도 덮어쓰기 (기본은 중단)
+set -e
+cd "$(dirname "$0")"
+SPEC="case_spec.yaml"; FORCE=""
+for a in "$@"; do [ "$a" = "--force" ] && FORCE="--force" || SPEC="$a"; done
+
+[ -f ../02_mesh/MESH_APPROVED ] || { echo "[STOP] ../02_mesh/MESH_APPROVED 없음 → 격자 승인 후 진행"; exit 1; }
+command -v porousSimpleFoam >/dev/null || { echo "[STOP] OpenFOAM 환경이 로드되지 않음"; exit 1; }
+if [ -z "$VIRTUAL_ENV" ] && [ -f ~/venvs/cfd/bin/activate ]; then source ~/venvs/cfd/bin/activate; fi
+
+python3 scripts/make_case.py "$SPEC" $FORCE
+CASE=$(python3 -c "import yaml;print(yaml.safe_load(open('$SPEC'))['meta']['name'])")
+cd "$CASE"
+source run.env
+
+echo "[RUN] $APP  (03_cases/$CASE/log.$APP) - 진행 상황: tail -f 03_cases/$CASE/log.$APP"
+if [ "$N_PROCS" -gt 1 ]; then
+    decomposePar -force > log.decomposePar 2>&1
+    mpirun -np "$N_PROCS" "$APP" -parallel > "log.$APP" 2>&1 || echo "[WARN] $APP 비정상 종료 → 보고서에서 확인"
+    reconstructPar -latestTime > log.reconstructPar 2>&1
+    rm -rf processor*
+else
+    "$APP" > "log.$APP" 2>&1 || echo "[WARN] $APP 비정상 종료 → 보고서에서 확인"
+fi
+
+cd ..
+python3 scripts/check_case.py --case "$CASE" --spec "$SPEC"

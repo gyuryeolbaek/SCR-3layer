@@ -1,0 +1,43 @@
+{
+  "name": "flow_2layer",
+  "revision": 0,
+  "stage": "flow",
+  "T_in_K": 598.15,
+  "rho": 0.5707397791347171,
+  "mu": 2.9052204139240355e-05,
+  "nu": 5.0902714689495805e-05,
+  "inlet_velocity": 35.0,
+  "inlet_diameter": 0.4,
+  "inlet_area": 0.12566370614359174,
+  "mass_flow_kg_h_nominal": 9036.880762095085,
+  "k_in": 4.59375,
+  "omega_in": 139.75424859373686,
+  "active_layers": [
+    "catalyst_1",
+    "catalyst_2"
+  ],
+  "porosity": 0.687,
+  "porous_coeffs": {
+    "d_axial": 4273504.273504273,
+    "f_axial": 9.509329651839314,
+    "d_transverse": 42735042735.04273,
+    "f_transverse": 95093.29651839314,
+    "e1": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "e2": [
+      0.0,
+      1.0,
+      0.0
+    ]
+  },
+  "monitor_planes": {
+    "catalyst_1_in": 2.72,
+    "catalyst_1_out": 2.08,
+    "catalyst_2_in": 1.77,
+    "catalyst_2_out": 1.13
+  },
+  "cell_size": 0.05
+}
