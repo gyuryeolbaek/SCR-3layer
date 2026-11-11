@@ -10,8 +10,9 @@
 # =====================================================================
 
 meta:
-  name: flow_2layer          # 케이스 폴더 이름 (영문자로 시작, 03_cases/<name>/)
-  revision: 0
+  name: flow_2layer_avg      # 케이스 폴더 이름 (영문자로 시작, 03_cases/<name>/)
+  revision: 1
+  revision_note: "rev1: flow_2layer(rev0) 수렴 진단. 물리 조건 동일, 잔차 필드 저장 + 마지막 1000회 U·p 평균(fieldAverage) 추가"
   stage: flow
   scenario: "1.6 MW 이중연료 엔진, LNG 50% 부하. 검증용 2단 촉매 (3번째 층 촉매 없음)"
 
@@ -72,6 +73,11 @@ solver:
   monitor_window: 200          # 마지막 N 반복 동안 모니터 값 변동으로 수렴 판정
   monitor_tolerance: 0.005     # 0.5 %
   write_interval: 500
+  write_residual_fields: true  # solverInfo가 셀별 잔차 필드(initialResidual:*)를 저장 → 잔차가 큰 위치 확인용
+  field_average:               # 마지막 window회 동안 U, p 산술 평균 (UMean, pMean). check_case.py가 있으면 평균 필드로 판정
+    enabled: true
+    window: 1000
+    fields: [U, p]
 
 parallel:
   n_procs: {value: 8, status: assumed, note: "P코어 8개. 23만 셀이면 4~8로 충분"}

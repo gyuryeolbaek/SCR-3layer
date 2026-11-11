@@ -179,8 +179,27 @@ def monitor_planes(info, active, h):
 
 def control_dict(spec, roles, planes):
     s = spec["solver"]
+    res_fields = "yes" if s.get("write_residual_fields", False) else "no"
     fos = [f"""
-    solverInfo {{ type solverInfo; libs (utilityFunctionObjects); fields (U p k omega); writeResidualFields no; }}
+    solverInfo {{ type solverInfo; libs (utilityFunctionObjects); fields (U p k omega); writeResidualFields {res_fields}; }}"""]
+    fa = s.get("field_average", {}) or {}
+    if fa.get("enabled", False):
+        t0 = max(int(s["max_iterations"]) - int(fa["window"]), 0)
+        flds = "\n".join(f"            {f} {{ mean on; prime2Mean off; base iteration; }}" for f in fa.get("fields", ["U", "p"]))
+        fos.append(f"""
+    fieldAverage1
+    {{
+        type            fieldAverage;
+        libs            (fieldFunctionObjects);
+        writeControl    writeTime;
+        timeStart       {t0};       // 마지막 {fa['window']}회 평균 (max_iterations - window)
+        restartOnRestart false;
+        fields
+        (
+{flds}
+        );
+    }}""")
+    fos.append(f"""
     yPlus {{ type yPlus; libs (fieldFunctionObjects); writeControl writeTime; }}
     massFlow_inlet  {{ type surfaceFieldValue; libs (fieldFunctionObjects); log false; writeFields false;
                       regionType patch; name {roles['inlet']};  operation sum; fields (phi); }}
@@ -189,7 +208,7 @@ def control_dict(spec, roles, planes):
     p_inlet  {{ type surfaceFieldValue; libs (fieldFunctionObjects); log false; writeFields false;
                regionType patch; name {roles['inlet']};  operation areaAverage; fields (p); }}
     p_outlet {{ type surfaceFieldValue; libs (fieldFunctionObjects); log false; writeFields false;
-               regionType patch; name {roles['outlet']}; operation areaAverage; fields (p); }}"""]
+               regionType patch; name {roles['outlet']}; operation areaAverage; fields (p); }}""")
     for tag, z in planes.items():
         fos.append(f"""
     p_{tag}
@@ -375,7 +394,12 @@ def main():
         "k_in": k_in, "omega_in": om_in,
         "active_layers": active, "porosity": float(v(spec["catalyst"]["porosity"])),
         "porous_coeffs": porous, "monitor_planes": planes, "cell_size": h,
+        "write_residual_fields": bool(spec["solver"].get("write_residual_fields", False)),
+        "field_average": spec["solver"].get("field_average") or {"enabled": False},
     }
+    if case_info["field_average"].get("enabled"):
+        case_info["field_average"]["time_start"] = max(
+            int(spec["solver"]["max_iterations"]) - int(case_info["field_average"]["window"]), 0)
     (case / "case_info.json").write_text(json.dumps(case_info, indent=2, ensure_ascii=False))
     (case / "run.env").write_text(f"N_PROCS={n_procs}\nAPP={spec['solver']['application']}\n")
 

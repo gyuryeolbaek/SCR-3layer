@@ -50,8 +50,19 @@ def read_dat(path):
                 continue
             parts = [p.strip() for p in line.split("\t") if p.strip()]
             if parts:
-                rows[float(parts[0])] = parts  # 재시작 시 같은 시간은 나중 값으로
-    return cols, [rows[t] for t in sorted(rows)]
+                # 재시작 시 같은 시간은 나중 값으로. yPlus.dat처럼 한 시간에 패치별로 여러 행이 있으면
+                # 두 번째 열(패치 이름)까지 키에 넣어 행이 덮어써지지 않게 함
+                key = (float(parts[0]), "" if len(parts) < 2 or _isnum(parts[1]) else parts[1])
+                rows[key] = parts
+    return cols, [rows[k] for k in sorted(rows)]
+
+
+def _isnum(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 
 def series(case, fo, file="surfaceFieldValue.dat"):
@@ -64,21 +75,56 @@ def series(case, fo, file="surfaceFieldValue.dat"):
 
 
 # ---------------------------------------------------------------------------
-def read_fields(case):
+def read_fields(case, patches=()):
+    """마지막 시간의 내부 격자 + 지정한 패치(면 데이터). 반환: internal, {patch: polydata}, t_last"""
     r = vtk.vtkOpenFOAMReader()
     r.SetFileName(str(case / "case.foam"))
     r.ReadZonesOn()
     r.CreateCellToPointOff()
     r.UpdateInformation()
+    for i in range(r.GetNumberOfPatchArrays()):
+        name = r.GetPatchArrayName(i)
+        base = name.split("/")[-1]
+        r.SetPatchArrayStatus(name, 1 if (name == "internalMesh" or base in patches) else 0)
     tv = r.GetTimeValues()
     t_last = tv.GetValue(tv.GetNumberOfTuples() - 1) if tv and tv.GetNumberOfTuples() else 0
     r.UpdateTimeStep(t_last)
     mb = r.GetOutput()
-    internal = None
+    internal, pdata = None, {}
     for i in range(mb.GetNumberOfBlocks()):
-        if mb.GetMetaData(i).Get(vtk.vtkCompositeDataSet.NAME()) == "internalMesh":
+        nm = mb.GetMetaData(i).Get(vtk.vtkCompositeDataSet.NAME())
+        if nm == "internalMesh":
             internal = mb.GetBlock(i)
-    return internal, t_last
+        elif nm in ("boundary", "patches", "patch"):
+            bb = mb.GetBlock(i)
+            for j in range(bb.GetNumberOfBlocks()):
+                pn = bb.GetMetaData(j).Get(vtk.vtkCompositeDataSet.NAME())
+                if pn in patches:
+                    pdata[pn] = bb.GetBlock(j)
+    return internal, pdata, t_last
+
+
+def cell_array_names(ds):
+    cd = ds.GetCellData()
+    return [cd.GetArrayName(i) for i in range(cd.GetNumberOfArrays())]
+
+
+def area_average(ds, names):
+    """면(패치) 데이터의 면적 가중 평균"""
+    f = vtk.vtkCellSizeFilter(); f.SetInputData(ds)
+    f.ComputeAreaOn(); f.ComputeVolumeOff(); f.ComputeLengthOff(); f.ComputeVertexCountOff(); f.Update()
+    a = v2n(f.GetOutput().GetCellData().GetArray("Area"))
+    out = {}
+    for n in names:
+        arr = ds.GetCellData().GetArray(n)
+        if arr is not None:
+            out[n] = float(np.sum(v2n(arr) * a) / a.sum())
+    return out
+
+
+def cell_centers(grid):
+    f = vtk.vtkCellCenters(); f.SetInputData(grid); f.VertexCellsOff(); f.Update()
+    return v2n(f.GetOutput().GetPoints().GetData())
 
 
 def cut(grid, origin, normal):
@@ -92,10 +138,14 @@ def cut(grid, origin, normal):
     for i in range(pd.GetNumberOfCells()):
         pd.GetCellPoints(i, ids)
         polys.append(pts[[ids.GetId(k) for k in range(ids.GetNumberOfIds())]])
-    U = v2n(pd.GetCellData().GetArray("U"))
-    p = v2n(pd.GetCellData().GetArray("p"))
-    area = np.array([poly_area(P, normal) for P in polys])
-    return {"polys": polys, "U": U, "p": p, "area": area}
+    d = {"polys": polys, "area": np.array([poly_area(P, normal) for P in polys])}
+    for n in cell_array_names(pd):   # U, p, UMean, pMean, initialResidual:* 등 모든 셀 배열
+        d[n] = v2n(pd.GetCellData().GetArray(n))
+    return d
+
+
+def plane_avg(d, name):
+    return float(np.sum(d[name] * d["area"]) / d["area"].sum())
 
 
 def poly_area(P, n):
@@ -176,7 +226,7 @@ def main():
     t_po, p_out = series(case, "p_outlet")
     if len(p_in):
         mon["전체 ΔP"] = (t_pi, (p_in - p_out[:len(p_in)]) * rho)
-    layer_rows = []
+    dp_1d_of, mon_last = {}, {}
     for c in info["catalyst_zones"]:
         if c["name"] not in ci["active_layers"]:
             continue
@@ -186,14 +236,9 @@ def main():
             n = min(len(a), len(b))
             dp = (a[:n] - b[:n]) * rho
             mon[f"ΔP {c['name']}"] = (t1[:n], dp)
-            L = c["z_max"] - c["z_min"]
-            dp_1d = L * (mu * pc["d_axial"] * U_s + 0.5 * rho * pc["f_axial"] * U_s ** 2)
-            dev = (dp[-1] - dp_1d) / dp_1d * 100
-            layer_rows.append((c["name"], dp[-1], dp_1d, dev))
-            rec("PASS" if abs(dev) < 15 else "WARN", f"압력손실 {c['name']}",
-                f"CFD {dp[-1]:.1f} Pa vs 1D 이론 {dp_1d:.1f} Pa (차이 {dev:+.1f}%, 균일 유동 가정)")
-    if "전체 ΔP" in mon:
-        rec("INFO", "전체 압력손실 (입구→출구)", f"{mon['전체 ΔP'][1][-1]:.1f} Pa")
+            mon_last[c["name"]] = dp[-1]
+        L = c["z_max"] - c["z_min"]
+        dp_1d_of[c["name"]] = L * (mu * pc["d_axial"] * U_s + 0.5 * rho * pc["f_axial"] * U_s ** 2)
 
     win = s["monitor_window"]
     for name, (t, y) in mon.items():
@@ -202,13 +247,58 @@ def main():
             rec("WARN", f"수렴 판정 불가: {name}", f"반복 수({t[-1]:.0f})가 판정 구간({win})에 비해 짧음")
             break
         var = (y[sel].max() - y[sel].min()) / max(abs(y[-1]), 1e-12)
-        rec("PASS" if var <= s["monitor_tolerance"] else "WARN", f"모니터 안정성: {name}",
+        rec("PASS" if var <= s["monitor_tolerance"] else "WARN", f"모니터 안정성: {name} (순간값)",
             f"마지막 {win}회 변동 {var * 100:.2f}% (기준 ≤ {s['monitor_tolerance'] * 100:.1f}%)")
 
-    # --- 필드: 촉매 입구 균일도, 속도 -----------------------------------------
-    internal, t_last = read_fields(case)
+    # --- 필드 (마지막 시간): 순간값 U,p / 평균값 UMean,pMean -------------------
+    roles = info["patch_roles"]
+    internal, pdata, t_last = read_fields(case, patches=(roles["inlet"], roles["outlet"]))
+    names = cell_array_names(internal)
+    has_mean = "UMean" in names and "pMean" in names
+    fa = ci.get("field_average", {}) or {}
+    kinds = [("inst", "U", "p")] + ([("mean", "UMean", "pMean")] if has_mean else [])
+    label = {"inst": f"순간값 (iter {t_last:.0f})",
+             "mean": f"평균값 (iter {fa.get('time_start', '?')}~{t_last:.0f})"}
+    prim = "mean" if has_mean else "inst"
+    if has_mean:
+        rec("INFO", "판정 기준 필드", f"평균 필드 UMean, pMean 사용 ({label['mean']}). 순간값과의 비교는 7절")
+    elif fa.get("enabled"):
+        rec("WARN", "평균 필드 없음", "fieldAverage가 켜져 있지만 UMean/pMean이 마지막 시간에 없음 → 순간값으로 판정")
+
+    # 압력손실: 모니터와 같은 평면(촉매층 위/아래 0.4h)의 면적 평균 p
+    dp_field = {k: {} for k, _, _ in kinds}
+    for c in info["catalyst_zones"]:
+        if c["name"] not in ci["active_layers"]:
+            continue
+        zi = ci["monitor_planes"][f"{c['name']}_in"]
+        zo = ci["monitor_planes"][f"{c['name']}_out"]
+        di, do = cut(internal, (0, 0, zi), (0, 0, 1)), cut(internal, (0, 0, zo), (0, 0, 1))
+        for k, _, pn in kinds:
+            dp_field[k][c["name"]] = (plane_avg(di, pn) - plane_avg(do, pn)) * rho
+    tot = {}
+    if roles["inlet"] in pdata and roles["outlet"] in pdata:
+        for k, _, pn in kinds:
+            ai = area_average(pdata[roles["inlet"]], [pn]); ao = area_average(pdata[roles["outlet"]], [pn])
+            if pn in ai and pn in ao:
+                tot[k] = (ai[pn] - ao[pn]) * rho
+
+    layer_rows = []
+    for name, dp_1d in dp_1d_of.items():
+        dp = dp_field[prim].get(name, mon_last.get(name))
+        if dp is None:
+            continue
+        dev = (dp - dp_1d) / dp_1d * 100
+        layer_rows.append((name, dp, dp_1d, dev))
+        rec("PASS" if abs(dev) < 15 else "WARN", f"압력손실 {name}" + (" (평균값)" if has_mean else ""),
+            f"CFD {dp:.1f} Pa vs 1D 이론 {dp_1d:.1f} Pa (차이 {dev:+.1f}%, 균일 유동 가정)")
+    if prim in tot:
+        rec("INFO", "전체 압력손실 (입구→출구)" + (" (평균값)" if has_mean else ""), f"{tot[prim]:.1f} Pa")
+    elif "전체 ΔP" in mon:
+        rec("INFO", "전체 압력손실 (입구→출구)", f"{mon['전체 ΔP'][1][-1]:.1f} Pa")
+
+    # 촉매 유속 균일도: 층 깊이 1/3 지점
     lo, hi = spec["validation"]["paper_catalyst_velocity_range"]
-    uni_rows = []
+    uni = {k: {} for k, _, _ in kinds}
     planes = {}
     for c in info["catalyst_zones"]:
         if c["name"] not in ci["active_layers"]:
@@ -218,16 +308,36 @@ def main():
         z = c["z_max"] - (c["z_max"] - c["z_min"]) / 3
         d = cut(internal, (0, 0, z), (0, 0, 1))
         planes[c["name"]] = (z, d)
-        w = -d["U"][:, 2]  # 아래 방향 유동을 양수로
-        g, m = uniformity(w, d["area"])
-        uphys = w / eps
-        uni_rows.append((c["name"], g, m, w.max(), w.min(), m / eps))
-        rec("INFO", f"촉매 유속 균일도 {c['name']} (층 1/3 깊이)",
-            f"γ = {g:.3f}, 표면속도 평균 {m:.2f} (최대 {w.max():.2f}, 최소 {w.min():.2f}) m/s")
+        for k, un, _ in kinds:
+            w = -d[un][:, 2]  # 아래 방향 유동을 양수로
+            g, m = uniformity(w, d["area"])
+            uni[k][c["name"]] = (g, m, w.max(), w.min())
+    uni_rows = []
+    for name, (g, m, wmax, wmin) in uni[prim].items():
+        uni_rows.append((name, g, m, wmax, wmin, m / eps))
+        tag = " (평균값)" if has_mean else ""
+        rec("INFO", f"촉매 유속 균일도 {name} (층 1/3 깊이){tag}",
+            f"γ = {g:.3f}, 표면속도 평균 {m:.2f} (최대 {wmax:.2f}, 최소 {wmin:.2f}) m/s")
         ok = lo <= m / eps <= hi
-        rec("PASS" if ok else "WARN", f"촉매 내 물리 속도 {c['name']}",
-            f"평균 {m / eps:.2f} m/s, 범위 {uphys.min():.2f}~{uphys.max():.2f} m/s "
+        rec("PASS" if ok else "WARN", f"촉매 내 물리 속도 {name}{tag}",
+            f"평균 {m / eps:.2f} m/s, 범위 {wmin / eps:.2f}~{wmax / eps:.2f} m/s "
             f"(논문 계수 산출 범위 {lo}~{hi} m/s)" + ("" if ok else " → 범위 밖이면 다공성 계수 외삽"))
+
+    # 순간값 vs 평균값 비교표
+    cmp_rows = []
+    if has_mean:
+        for name in uni["inst"]:
+            gi, gm = uni["inst"][name][0], uni["mean"][name][0]
+            cmp_rows.append((f"균일도 γ {name}", f"{gi:.3f}", f"{gm:.3f}", f"{gi - gm:+.3f}"))
+            for j, lab in ((2, "최대 표면속도"), (3, "최소 표면속도")):
+                xi, xm = uni["inst"][name][j], uni["mean"][name][j]
+                cmp_rows.append((f"{lab} {name} [m/s]", f"{xi:.2f}", f"{xm:.2f}", f"{(xi - xm) / xm * 100:+.1f}%"))
+        for name in dp_field["inst"]:
+            xi, xm = dp_field["inst"][name], dp_field["mean"][name]
+            cmp_rows.append((f"ΔP {name} [Pa]", f"{xi:.1f}", f"{xm:.1f}", f"{(xi - xm) / xm * 100:+.2f}%"))
+        if "inst" in tot and "mean" in tot:
+            cmp_rows.append(("전체 ΔP [Pa]", f"{tot['inst']:.1f}", f"{tot['mean']:.1f}",
+                             f"{(tot['inst'] - tot['mean']) / tot['mean'] * 100:+.2f}%"))
 
     # y+
     cols, rows = read_dat(case / "postProcessing" / "yPlus" / "0" / "yPlus.dat")
@@ -237,34 +347,78 @@ def main():
         rec("INFO", "y+ (min/max/평균)", "; ".join(f"{k} {a:.0f}/{b:.0f}/{c:.0f}" for k, (a, b, c) in yp.items())
             + " → 벽함수 권장 30~300")
 
+    # --- 잔차 필드: 어디서 잔차가 큰가 ----------------------------------------
+    res_names = [n for n in names if n.startswith("initialResidual:")]
+    res_rows = []
+    if res_names:
+        H, Hd = info["housing"]["H"], info["diffuser_height"]
+        cc = cell_centers(internal)
+        zc = cc[:, 2]
+        regions = {"입구 덕트": zc > H + Hd, "확장부": (zc > H) & (zc <= H + Hd),
+                   "하우징": (zc >= 0) & (zc <= H), "출구 덕트": zc < 0}
+        for n in res_names:
+            r_ = v2n(internal.GetCellData().GetArray(n))
+            r_ = np.abs(r_) if r_.ndim == 1 else np.abs(r_).max(axis=1)  # 잔차 필드는 부호가 있음
+            thr = np.quantile(r_, 0.99)
+            top = r_ >= thr
+            imax = int(np.argmax(r_))
+            share = {k: top[m].sum() / max(top.sum(), 1) * 100 for k, m in regions.items()}
+            res_rows.append((n.split(":", 1)[1], float(r_.max()), cc[imax], float(np.median(r_)), share))
+    elif ci.get("write_residual_fields"):
+        rec("WARN", "잔차 필드 없음", "write_residual_fields가 켜져 있지만 initialResidual:* 필드가 없음")
+
     # --- 그림 ---------------------------------------------------------------
     y0 = 0.0071 * W
     sec = cut(internal, (0, y0, 0), (0, 1, 0))
-    fig, ax = plt.subplots(figsize=(5.5, 12))
-    pc_ = PolyCollection([P[:, [0, 2]] for P in sec["polys"]], array=np.linalg.norm(sec["U"], axis=1),
-                         cmap="viridis", edgecolor="none")
-    ax.add_collection(pc_); ax.autoscale_view(); ax.set_aspect("equal")
-    for c in info["catalyst_zones"]:
-        st = "-" if c["name"] in ci["active_layers"] else ":"
-        ax.add_patch(plt.Rectangle((-W / 2, c["z_min"]), W, c["z_max"] - c["z_min"], fill=False, ec="w", ls=st, lw=1))
-    fig.colorbar(pc_, ax=ax, label="|U| [m/s] (superficial)", shrink=0.6)
-    ax.set_title(f"Velocity, section y~0 (iter {t_last:.0f})\nsolid box: active catalyst, dotted: inactive")
-    ax.set_xlabel("x [m]"); ax.set_ylabel("z [m]")
+    fig, axs = plt.subplots(1, len(kinds), figsize=(5.5 * len(kinds), 12))
+    axs = np.atleast_1d(axs)
+    vmax = max(np.linalg.norm(sec[un], axis=1).max() for _, un, _ in kinds)
+    for ax, (k, un, _) in zip(axs, kinds):
+        pc_ = PolyCollection([P[:, [0, 2]] for P in sec["polys"]], array=np.linalg.norm(sec[un], axis=1),
+                             cmap="viridis", edgecolor="none", clim=(0, vmax))
+        ax.add_collection(pc_); ax.autoscale_view(); ax.set_aspect("equal")
+        for c in info["catalyst_zones"]:
+            st = "-" if c["name"] in ci["active_layers"] else ":"
+            ax.add_patch(plt.Rectangle((-W / 2, c["z_min"]), W, c["z_max"] - c["z_min"], fill=False, ec="w", ls=st, lw=1))
+        fig.colorbar(pc_, ax=ax, label=f"|{un}| [m/s] (superficial)", shrink=0.6)
+        ttl = f"iter {t_last:.0f}" if k == "inst" else f"mean, iter {fa.get('time_start', '?')}-{t_last:.0f}"
+        ax.set_title(f"|{un}|, section y~0 ({ttl})\nsolid box: active catalyst, dotted: inactive")
+        ax.set_xlabel("x [m]"); ax.set_ylabel("z [m]")
     fig.tight_layout(); fig.savefig(rep / "flow_velocity_section.png", dpi=150); plt.close(fig)
 
     n = len(planes)
     if n:
-        fig, axs = plt.subplots(1, n, figsize=(5.2 * n, 4.6))
-        axs = np.atleast_1d(axs)
-        for ax, (name, (z, d)) in zip(axs, planes.items()):
-            w = -d["U"][:, 2]
-            m = np.sum(w * d["area"]) / d["area"].sum()
-            pcm = PolyCollection([P[:, [0, 1]] for P in d["polys"]], array=w / m, cmap="coolwarm",
-                                 edgecolor="none", clim=(0.5, 1.5))
-            ax.add_collection(pcm); ax.autoscale_view(); ax.set_aspect("equal")
-            fig.colorbar(pcm, ax=ax, label="w / w_mean")
-            ax.set_title(f"{name}, 1/3 depth (z={z:.3f} m)")
+        fig, axs = plt.subplots(len(kinds), n, figsize=(5.2 * n, 4.6 * len(kinds)), squeeze=False)
+        for row, (k, un, _) in enumerate(kinds):
+            for ax, (name, (z, d)) in zip(axs[row], planes.items()):
+                w = -d[un][:, 2]
+                m = np.sum(w * d["area"]) / d["area"].sum()
+                pcm = PolyCollection([P[:, [0, 1]] for P in d["polys"]], array=w / m, cmap="coolwarm",
+                                     edgecolor="none", clim=(0.5, 1.5))
+                ax.add_collection(pcm); ax.autoscale_view(); ax.set_aspect("equal")
+                fig.colorbar(pcm, ax=ax, label="w / w_mean")
+                ax.set_title(f"{name}, 1/3 depth (z={z:.3f} m), {'instant' if k == 'inst' else 'mean'}\n"
+                             f"gamma = {uni[k][name][0]:.3f}")
         fig.tight_layout(); fig.savefig(rep / "flow_catalyst_inlet.png", dpi=150); plt.close(fig)
+
+    if res_names:
+        nr = len(res_names)
+        fig, axs = plt.subplots(1, nr, figsize=(3.6 * nr, 12), squeeze=False)
+        for ax, nm in zip(axs[0], res_names):
+            r_ = np.abs(sec[nm]) if sec[nm].ndim == 1 else np.abs(sec[nm]).max(axis=1)
+            lr = np.log10(np.maximum(r_, 1e-12))
+            hi_ = np.log10(max(float(np.abs(v2n(internal.GetCellData().GetArray(nm))).max()), 1e-12))
+            pcm = PolyCollection([P[:, [0, 2]] for P in sec["polys"]], array=lr, cmap="inferno",
+                                 edgecolor="none", clim=(hi_ - 4, hi_))
+            ax.add_collection(pcm); ax.autoscale_view(); ax.set_aspect("equal")
+            for c in info["catalyst_zones"]:
+                st = "-" if c["name"] in ci["active_layers"] else ":"
+                ax.add_patch(plt.Rectangle((-W / 2, c["z_min"]), W, c["z_max"] - c["z_min"], fill=False, ec="c", ls=st, lw=0.8))
+            fig.colorbar(pcm, ax=ax, label=f"log10 {nm}", shrink=0.5)
+            ax.set_title(f"{nm.split(':', 1)[1]} residual\n(y~0, iter {t_last:.0f})")
+            ax.set_xlabel("x [m]")
+        axs[0][0].set_ylabel("z [m]")
+        fig.tight_layout(); fig.savefig(rep / "flow_residual_section.png", dpi=130); plt.close(fig)
 
     fig, axs = plt.subplots(1, 2, figsize=(12, 4.2))
     for k, h in res_hist.items():
@@ -290,14 +444,18 @@ def main():
          "## 1. 자동 검사", "", "| 결과 | 항목 | 내용 |", "|---|---|---|"]
     L += [f"| {icon[l]} {l} | {i} | {d} |" for l, i, d in results]
     if layer_rows:
-        L += ["", "## 2. 촉매층 압력손실", "", "| 층 | CFD [Pa] | 1D 이론 [Pa] | 차이 |", "|---|---|---|---|"]
+        L += ["", "## 2. 촉매층 압력손실" + (" (평균값)" if has_mean else ""), "",
+              "| 층 | CFD [Pa] | 1D 이론 [Pa] | 차이 |", "|---|---|---|---|"]
         L += [f"| {a} | {b:.1f} | {c:.1f} | {d:+.1f}% |" for a, b, c, d in layer_rows]
     if uni_rows:
-        L += ["", "## 3. 촉매 입구 유속 분포", "",
+        L += ["", "## 3. 촉매 입구 유속 분포" + (" (평균값)" if has_mean else ""), "",
               "| 층 | 균일도 γ | 표면속도 평균 | 최대 | 최소 | 물리 속도 평균 |", "|---|---|---|---|---|---|"]
         L += [f"| {a} | {b:.3f} | {c:.2f} | {d:.2f} | {e:.2f} | {f:.2f} |" for a, b, c, d, e, f in uni_rows]
     L += ["", "## 4. 그림", "", "![section](flow_velocity_section.png)", "",
-          "![inlet](flow_catalyst_inlet.png)", "", "![conv](flow_convergence.png)", "",
+          "![inlet](flow_catalyst_inlet.png)", "", "![conv](flow_convergence.png)", ""]
+    if res_names:
+        L += ["![residual](flow_residual_section.png)", ""]
+    L += [
           "## 5. 검증 메모", "",
           "- 3-1단계는 반응이 없어 NOx 전환율(측정 88.8~99.7 %) 비교는 3-2단계에서 수행.",
           "- 촉매층 압력손실이 1D 이론값과 가까우면 다공성 계수 변환(d = 1/k, f = 2cF/√k)이 의도대로 적용된 것.",
@@ -305,6 +463,18 @@ def main():
           "- [ ] 질량유량이 실제 엔진 조건(1.6 MW, LNG 50 % 부하)과 맞는가",
           "- [ ] 촉매 입구 유속 분포가 상식적인가",
           "- [ ] WARN 항목을 이대로 진행해도 되는가"]
+    if cmp_rows:
+        L += ["", f"## 7. 순간값 vs 평균값 ({label['inst']} / {label['mean']})", "",
+              "| 항목 | 순간값 | 평균값 | 차이 (순간-평균) |", "|---|---|---|---|"]
+        L += [f"| {a} | {b} | {c} | {d} |" for a, b, c, d in cmp_rows]
+        L += ["", "- 압력손실은 모니터와 같은 평면(촉매층 위/아래 0.4 h)의 면적 평균, 전체 ΔP는 입구/출구 패치 면적 평균."]
+    if res_rows:
+        L += ["", f"## 8. 셀별 잔차 분포 (iter {t_last:.0f}, solverInfo initialResidual)", "",
+              "상위 1 % 잔차 셀이 어느 영역에 있는지 (영역별 비율, 합 100 %)", "",
+              "| 필드 | 최대 | 최대 위치 (x, y, z) [m] | 중앙값 | " + " | ".join(res_rows[0][4]) + " |",
+              "|---|---|---|---|" + "---|" * len(res_rows[0][4])]
+        L += [f"| {n} | {mx:.2e} | ({c[0]:.3f}, {c[1]:.3f}, {c[2]:.3f}) | {md:.1e} | "
+              + " | ".join(f"{x:.0f}%" for x in sh.values()) + " |" for n, mx, c, md, sh in res_rows]
     (rep / "flow_report.md").write_text("\n".join(L), encoding="utf-8")
 
     for l, i, d in results:
