@@ -188,7 +188,7 @@ def main():
     if re.search(r"\bnan\b", txt, re.I) or re.search(r"Foam::sigFpe::sigHandler|Floating point exception \(core dumped\)", txt):
         rec("FAIL", "발산 (NaN)", "log 확인")
     converged = "SIMPLE solution converged" in txt
-    rec("PASS" if converged else ("WARN" if n_it >= s["max_iterations"] else "INFO"), "반복 수",
+    rec("PASS" if converged else "INFO", "반복 수",
         f"{n_it} / 최대 {s['max_iterations']}" + (" (잔차 목표 도달로 종료)" if converged else ""))
 
     cols, rows = read_dat(case / "postProcessing" / "solverInfo" / "0" / "solverInfo.dat")
@@ -201,8 +201,9 @@ def main():
         it_hist = np.array([float(r[0]) for r in rows])
         last = {k: h[-1] for k, h in res_hist.items()}
         worst = max(last.values())
-        rec("PASS" if worst <= s["residual_target"] * 10 else "WARN", "최종 초기 잔차",
-            ", ".join(f"{k} {x:.1e}" for k, x in last.items()) + f" (목표 {s['residual_target']:.0e})")
+        # 2026-11-11 사용자 결정: 잔차는 참고용. 박리 유동 때문에 잔차가 평평해져도 촉매층 결과는 수렴함
+        rec("INFO", "최종 초기 잔차 (참고)",
+            ", ".join(f"{k} {x:.1e}" for k, x in last.items()) + f" (솔버 종료 목표 {s['residual_target']:.0e}, 판정 제외)")
 
     # --- 질량 보존 ----------------------------------------------------------
     t_in, m_in = series(case, "massFlow_inlet")
@@ -241,14 +242,13 @@ def main():
         dp_1d_of[c["name"]] = L * (mu * pc["d_axial"] * U_s + 0.5 * rho * pc["f_axial"] * U_s ** 2)
 
     win = s["monitor_window"]
+    mon_var = {}
     for name, (t, y) in mon.items():
-        sel = t > t[-1] - win
         if t[-1] < win * 1.5:
             rec("WARN", f"수렴 판정 불가: {name}", f"반복 수({t[-1]:.0f})가 판정 구간({win})에 비해 짧음")
             break
-        var = (y[sel].max() - y[sel].min()) / max(abs(y[-1]), 1e-12)
-        rec("PASS" if var <= s["monitor_tolerance"] else "WARN", f"모니터 안정성: {name} (순간값)",
-            f"마지막 {win}회 변동 {var * 100:.2f}% (기준 ≤ {s['monitor_tolerance'] * 100:.1f}%)")
+        sel = t > t[-1] - win
+        mon_var[name] = (y[sel].max() - y[sel].min()) / max(abs(y[-1]), 1e-12)
 
     # --- 필드 (마지막 시간): 순간값 U,p / 평균값 UMean,pMean -------------------
     roles = info["patch_roles"]
@@ -260,6 +260,16 @@ def main():
     label = {"inst": f"순간값 (iter {t_last:.0f})",
              "mean": f"평균값 (iter {fa.get('time_start', '?')}~{t_last:.0f})"}
     prim = "mean" if has_mean else "inst"
+
+    # 수렴 판정 (2026-11-11 사용자 결정): 촉매층 ΔP 모니터 안정성 + 순간/평균 차이 ≤ tol.
+    # 전체 ΔP 모니터는 출구 덕트 박리로 흔들리므로, 평균 필드가 있으면 순간/평균 차이로 판정하고 모니터 변동은 참고
+    tol = s["monitor_tolerance"]
+    for name, var in mon_var.items():
+        lvl = "PASS" if var <= tol else "WARN"
+        if name == "전체 ΔP" and has_mean:
+            lvl = "INFO"
+        rec(lvl, f"모니터 안정성: {name} (순간값)",
+            f"마지막 {win}회 변동 {var * 100:.2f}% (기준 ≤ {tol * 100:.1f}%)" + (" → 참고, 순간/평균 차이로 판정" if lvl == "INFO" else ""))
     if has_mean:
         rec("INFO", "판정 기준 필드", f"평균 필드 UMean, pMean 사용 ({label['mean']}). 순간값과의 비교는 7절")
     elif fa.get("enabled"):
@@ -338,6 +348,16 @@ def main():
         if "inst" in tot and "mean" in tot:
             cmp_rows.append(("전체 ΔP [Pa]", f"{tot['inst']:.1f}", f"{tot['mean']:.1f}",
                              f"{(tot['inst'] - tot['mean']) / tot['mean'] * 100:+.2f}%"))
+
+    if has_mean:
+        checks = [(f"ΔP {n}", dp_field["inst"][n], dp_field["mean"][n]) for n in dp_field["inst"]]
+        if "inst" in tot and "mean" in tot:
+            checks.append(("전체 ΔP", tot["inst"], tot["mean"]))
+        checks += [(f"균일도 γ {n}", uni["inst"][n][0], uni["mean"][n][0]) for n in uni["inst"]]
+        for nm, xi, xm in checks:
+            dv = abs(xi - xm) / max(abs(xm), 1e-12)
+            rec("PASS" if dv <= tol else "WARN", f"순간/평균 차이: {nm}",
+                f"{dv * 100:.2f}% (기준 ≤ {tol * 100:.1f}%)")
 
     # y+
     cols, rows = read_dat(case / "postProcessing" / "yPlus" / "0" / "yPlus.dat")

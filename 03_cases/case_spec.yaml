@@ -69,7 +69,7 @@ catalyst:
 solver:
   application: porousSimpleFoam   # 비등방 다공성을 압력식에서 암시적으로 처리 (simpleFoam+fvOptions는 가로 저항 1e4배에서 수렴이 극도로 느림)
   max_iterations: 3000
-  residual_target: 1.0e-5
+  residual_target: 1.0e-5       # 솔버 종료 조건(residualControl)만. 판정에는 쓰지 않음 (2026-11-11 사용자 결정, PROGRESS 결정 기록)
   monitor_window: 200          # 마지막 N 반복 동안 모니터 값 변동으로 수렴 판정
   monitor_tolerance: 0.005     # 0.5 %
   write_interval: 500
