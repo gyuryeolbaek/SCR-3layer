@@ -1,0 +1,15 @@
+#!/bin/bash
+# 형상 단계 전체 실행: spec → STL → 검증/보고서
+# 사용법: ./Allgeometry [geometry_spec.yaml]
+set -e
+cd "$(dirname "$0")"
+SPEC="${1:-geometry_spec.yaml}"
+
+if [ -f GEOMETRY_APPROVED ]; then
+    echo "[INFO] 형상 변경으로 기존 승인(GEOMETRY_APPROVED)을 해제합니다."
+    rm -f GEOMETRY_APPROVED
+fi
+
+rm -rf out && mkdir -p out
+python3 scripts/make_geometry.py "$SPEC" --out out
+python3 scripts/check_geometry.py --out out

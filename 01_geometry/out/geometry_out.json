@@ -1,0 +1,178 @@
+{
+  "units": "m",
+  "spec": "geometry_spec.yaml",
+  "revision": 1,
+  "stl": "fluid.stl",
+  "patches": {
+    "inlet": 124,
+    "outlet": 124,
+    "wall_inlet_duct": 254,
+    "wall_diffuser": 2199,
+    "wall_housing": 139,
+    "wall_outlet_duct": 252
+  },
+  "patch_roles": {
+    "inlet": "inlet",
+    "outlet": "outlet",
+    "walls": [
+      "wall_inlet_duct",
+      "wall_diffuser",
+      "wall_housing",
+      "wall_outlet_duct"
+    ]
+  },
+  "bbox": {
+    "min": [
+      -0.5,
+      -0.5,
+      -2.3
+    ],
+    "max": [
+      0.5,
+      0.5,
+      4.7
+    ]
+  },
+  "cad_volume": 3.4251537886159706,
+  "housing": {
+    "W": 1.0,
+    "D": 1.0,
+    "H": 2.7
+  },
+  "diffuser_height": 0.5,
+  "inlet": {
+    "diameter": 0.4,
+    "length_total": 1.5
+  },
+  "outlet": {
+    "diameter": 0.4,
+    "side": "-z",
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "center_z": 0.0,
+    "length_total": 2.3
+  },
+  "catalyst_zones": [
+    {
+      "name": "catalyst_1",
+      "z_min": 2.1,
+      "z_max": 2.7,
+      "box_min": [
+        -0.5,
+        -0.5,
+        2.1
+      ],
+      "box_max": [
+        0.5,
+        0.5,
+        2.7
+      ]
+    },
+    {
+      "name": "catalyst_2",
+      "z_min": 1.15,
+      "z_max": 1.75,
+      "box_min": [
+        -0.5,
+        -0.5,
+        1.15
+      ],
+      "box_max": [
+        0.5,
+        0.5,
+        1.75
+      ]
+    },
+    {
+      "name": "catalyst_3",
+      "z_min": 0.2,
+      "z_max": 0.8,
+      "box_min": [
+        -0.5,
+        -0.5,
+        0.2
+      ],
+      "box_max": [
+        0.5,
+        0.5,
+        0.8
+      ]
+    }
+  ],
+  "location_in_mesh": [
+    0.0123,
+    0.0137,
+    1.9321
+  ],
+  "flags": [
+    {
+      "item": "inlet_duct.diameter",
+      "value": 0.4,
+      "status": "assumed",
+      "note": "PPT에 정보 없음"
+    },
+    {
+      "item": "inlet_duct.length",
+      "value": 0.3,
+      "status": "assumed",
+      "note": "실제 덕트 직관부 길이"
+    },
+    {
+      "item": "inlet_duct.extension",
+      "value": 1.2,
+      "status": "assumed",
+      "note": "해석용 연장 길이 (약 3D)"
+    },
+    {
+      "item": "diffuser.height",
+      "value": 0.5,
+      "status": "assumed",
+      "note": "PPT에 정보 없음"
+    },
+    {
+      "item": "outlet_duct.center_x",
+      "value": 0.0,
+      "status": "estimated",
+      "note": "스케치상 바닥 중앙"
+    },
+    {
+      "item": "outlet_duct.center_y",
+      "value": 0.0,
+      "status": "estimated",
+      "note": ""
+    },
+    {
+      "item": "outlet_duct.length",
+      "value": 0.3,
+      "status": "assumed",
+      "note": ""
+    },
+    {
+      "item": "outlet_duct.extension",
+      "value": 2.0,
+      "status": "assumed",
+      "note": "해석용 연장 길이 (약 5D)"
+    },
+    {
+      "item": "catalyst_layers[catalyst_1]",
+      "value": null,
+      "status": "estimated",
+      "note": "두께 0.6 given, 위치 추정"
+    },
+    {
+      "item": "catalyst_layers[catalyst_2]",
+      "value": null,
+      "status": "estimated",
+      "note": "두께 0.6 given, 위치 추정"
+    },
+    {
+      "item": "catalyst_layers[catalyst_3]",
+      "value": null,
+      "status": "estimated",
+      "note": "두께 0.6 given, 위치 추정"
+    }
+  ]
+}

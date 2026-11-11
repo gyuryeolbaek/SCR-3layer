@@ -1,0 +1,58 @@
+# =====================================================================
+# 촉매 반응기 형상 사양 (geometry_spec.yaml)
+# ---------------------------------------------------------------------
+# - 모든 치수 단위: m
+# - 좌표계: 하우징 바닥 중심 = 원점, z 위쪽(+), 유동은 위 → 아래
+# - status 값 의미
+#     given    : 사용자가 제공한 값 (PPT 등)
+#     assumed  : 정보가 없어 가정한 값 → 반드시 사용자 확인 필요
+#     estimated: 스케치 비율로 추정한 값 → 실측값으로 교체 권장
+# =====================================================================
+
+meta:
+  name: catalyst_reactor
+  source: source/geometry_1.pptx
+  revision: 1
+  changelog:
+    - "rev1: 출구를 하우징 바닥(-z)으로 이동 (geometry_1.pptx), 촉매층 두께 0.6 m 확정" 
+
+housing:                     # 사각 하우징 (확장부 제외 본체)
+  width_x:  {value: 1.0, status: given}
+  depth_y:  {value: 1.0, status: given}
+  height_z: {value: 2.7, status: given,
+             note: "2.7 m에 확장부가 포함되지 않는다고 가정"}
+
+inlet_duct:                  # 상부 원형 입구 덕트 (+z 방향)
+  diameter:  {value: 0.40, status: assumed, note: "PPT에 정보 없음"}
+  length:    {value: 0.30, status: assumed, note: "실제 덕트 직관부 길이"}
+  extension: {value: 1.20, status: assumed, note: "해석용 연장 길이 (약 3D)"}
+
+diffuser:                    # 원형 덕트 → 사각 하우징 전이부
+  type: loft_circle_to_square
+  height: {value: 0.50, status: assumed, note: "PPT에 정보 없음"}
+
+outlet_duct:                 # 바닥 원형 출구 덕트 (-z 방향)
+  diameter:  {value: same_as_inlet, status: given,
+              note: "PPT: 입출구 직경 동일 가정"}
+  side: {value: "-z", status: given, note: "rev1 스케치: 하우징 바닥 중앙에서 아래로 배출"}
+  center_x: {value: 0.0, status: estimated, note: "스케치상 바닥 중앙"}
+  center_y: {value: 0.0, status: estimated}
+  length:    {value: 0.30, status: assumed}
+  extension: {value: 2.00, status: assumed, note: "해석용 연장 길이 (약 5D)"}
+  # 바닥 축소부(contraction) 없음: 스케치상 평판 바닥에 덕트가 직접 연결됨
+
+catalyst_layers:             # STL로 만들지 않음 → 격자 단계에서 topoSet 박스(cellZone)로 처리
+  # 하우징 단면 전체를 채운다고 가정. 두께 0.6 m는 사용자 확정(given),
+  # 각 층의 높이 위치는 스케치 비율로 추정(estimated)
+  - {name: catalyst_1, z_min: 2.10, z_max: 2.70, status: estimated, note: "두께 0.6 given, 위치 추정"}
+  - {name: catalyst_2, z_min: 1.15, z_max: 1.75, status: estimated, note: "두께 0.6 given, 위치 추정"}
+  - {name: catalyst_3, z_min: 0.20, z_max: 0.80, status: estimated, note: "두께 0.6 given, 위치 추정"}
+
+tessellation:                # STL 삼각화 정밀도
+  linear_deflection: 0.002   # m, 곡면 최대 편차
+  angular_deflection: 0.1    # rad
+
+patches:                     # 패치 이름 (경계조건/후처리 지침과 반드시 일치시킬 것)
+  inlet: inlet
+  outlet: outlet
+  walls: [wall_inlet_duct, wall_diffuser, wall_housing, wall_outlet_duct]

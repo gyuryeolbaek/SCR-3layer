@@ -1,0 +1,30 @@
+# ---- Python ----
+__pycache__/
+*.pyc
+
+# ---- OpenFOAM 대용량 결과 (02_mesh, 03_cases) ----
+# 시간 폴더: 0을 제외한 숫자 폴더 (1, 100, 0.5, 0.001 ...)
+/02_mesh/**/[1-9]*/
+/02_mesh/**/0.[0-9]*/
+/03_cases/**/[1-9]*/
+/03_cases/**/0.[0-9]*/
+# 단, postProcessing 안의 시간 폴더(.dat 등 작은 결과)는 추적
+!**/postProcessing/**/[1-9]*/
+!**/postProcessing/**/0.[0-9]*/
+# 병렬 분할
+processor*/
+# 격자: 스크립트로 재생성 가능
+**/constant/polyMesh/
+# postProcessing: .dat 같은 작은 결과는 남기고 대용량 필드/표면만 제외
+**/postProcessing/**/surfaces/
+**/postProcessing/**/*.vtp
+**/postProcessing/**/*.raw
+# 참고: *.foam, log.* 는 의도적으로 추적함 (제외하지 않음)
+
+# ---- 기타 ----
+*.vtk
+*.vtu
+VTK/
+
+# ---- Windows 복사 부산물 ----
+*:Zone.Identifier

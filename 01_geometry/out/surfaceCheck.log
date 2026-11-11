@@ -1,0 +1,98 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2606                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _481094f-20260618 OPENFOAM=2606 version=2606
+Arch   : "LSB;label=32;scalar=64"
+Exec   : /usr/lib/openfoam/openfoam2606/platforms/linux64GccDPInt32Opt/bin/surfaceCheck fluid.stl
+Date   : Nov 11 2026
+Time   : 15:05:45
+Host   : grb-CRFL
+PID    : 33268
+--> FOAM Warning : 
+    From Foam::fileName Foam::cwd_L()
+    in file POSIX.C at line 558
+    PWD is not the cwd() - reverting to physical description
+I/O    : uncollated
+--> FOAM Warning : 
+    From Foam::fileName Foam::cwd_L()
+    in file POSIX.C at line 558
+    PWD is not the cwd() - reverting to physical description
+Case   : /home/grb_crfl/work/SCR/3layer/01_geometry/out
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+memory pool : not available
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+
+--> FOAM Warning : allowSystemOperations : Allowing user-supplied system call operations.
+                   This can be a security risk if running untrusted cases
+                   through e.g. 'coded' on-the-fly-compilation functionality.
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Reading surface from "fluid.stl" ...
+
+Statistics:
+Triangles    : 3092 in 6 region(s)
+Vertices     : 1548
+Bounding Box : (-0.5 -0.5 -2.3) (0.5 0.5 4.7)
+
+Index	Region	Size
+-----	------	----
+0	inlet	124
+1	outlet	124
+2	wall_inlet_duct	254
+3	wall_diffuser	2199
+4	wall_housing	139
+5	wall_outlet_duct	252
+
+
+Surface has no illegal triangles.
+
+Triangle quality (equilateral=1, collapsed=0):
+    0 .. 0.05  : 0.424321
+    0.05 .. 0.1  : 0.146831
+    0.1 .. 0.15  : 0.154592
+    0.15 .. 0.2  : 0.0737387
+    0.2 .. 0.25  : 0.0236093
+    0.25 .. 0.3  : 0.0339586
+    0.3 .. 0.35  : 0.0226391
+    0.35 .. 0.4  : 0.0100259
+    0.4 .. 0.45  : 0.00452781
+    0.45 .. 0.5  : 0.0129366
+    0.5 .. 0.55  : 0.0161708
+    0.55 .. 0.6  : 0.00355757
+    0.6 .. 0.65  : 0.0100259
+    0.65 .. 0.7  : 0.0126132
+    0.7 .. 0.75  : 0.00937904
+    0.75 .. 0.8  : 0.00323415
+    0.8 .. 0.85  : 0.0103493
+    0.85 .. 0.9  : 0.00937904
+    0.9 .. 0.95  : 0.00679172
+    0.95 .. 1  : 0.0113195
+
+    min 1.91246e-14 for triangle 593
+    max 0.993163 for triangle 2298
+
+Dumping bad quality faces to "badFaces"
+Paste this into the input for surfaceSubset
+
+
+Edges:
+    min 0.000352006 for edge 1009 points (-0.200962 0.20093 3.11699)(-0.201129 0.201121 3.11675)
+    max 2.87924 for edge 4117 points (-0.5 -0.5 2.7)(-0.5 0.5 0)
+
+Checking for points less than 1e-6 of bounding box ((1 1 7) metre) apart.
+Found 0 nearby points.
+
+Surface is closed. All edges connected to two faces.
+
+Number of unconnected parts : 1
+
+Number of zones (connected area with consistent normal) : 1
+
+
+End
+
