@@ -2,7 +2,7 @@
 
 ## 처음 한 번 (WSL)
 ```bash
-cd ~/work/01_geometry
+cd ~/work/SCR/3layer/01_geometry
 python3 -m venv ~/venvs/cfd && source ~/venvs/cfd/bin/activate
 pip install -r requirements.txt
 ```
@@ -23,12 +23,12 @@ source <OpenFOAM etc/bashrc>   # surfaceCheck까지 돌리려면
 | geometry_report.md | 체크포인트 보고서 (사람이 확인) |
 | preview_*.png | 단면도 / 패치 색상 3D 그림 |
 
-Windows에서 보기: 탐색기 주소창에 `\\wsl.localhost\Ubuntu\home\<사용자>\work\01_geometry\out`
+Windows에서 보기: 탐색기 주소창에 `\\wsl.localhost\Ubuntu\home\<사용자>\work\SCR\3layer\01_geometry\out`
 
 ## 승인
 보고서와 그림을 확인한 뒤 직접 생성:
 ```bash
-touch ~/work/01_geometry/GEOMETRY_APPROVED
+touch ~/work/SCR/3layer/01_geometry/GEOMETRY_APPROVED
 ```
 `./Allgeometry`를 다시 돌리면 승인은 자동 해제됩니다.
 

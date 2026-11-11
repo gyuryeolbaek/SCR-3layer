@@ -29,8 +29,8 @@
   - 추정값(estimated): 출구 중심 (0, 0), 촉매층 3개의 높이 위치 (두께 0.6은 given)
   - housing.height_z 2.7은 given이지만, "확장부가 포함되지 않는다"는 해석은 가정임 → 확인 필요
   - surfaceCheck 삼각형 품질: 42%가 0.05 미만이고 최소값은 ~0 (triangle 593). `out/badFaces`에 40개가 기록됨 (geometry_report에는 없는 내용). 원→사각 확장부의 CAD 삼각화 특성으로 보이지만, snappyHexMesh 결과에 영향을 주는지는 격자 단계에서 확인 필요
-  - `01_geometry/README.md`의 경로가 예전 값(`~/work/01_geometry`)으로 남아 있음 → 현재 경로 `~/work/SCR/3layer/01_geometry`로 고쳐야 함
-- **다음 할 일:** 없음 (README 경로 수정만 남음). 형상을 바꾸면 rev2로 진행하고 다시 승인 필요
+  - (해결, 2026-11-11) `01_geometry/README.md`의 예전 경로 `~/work/01_geometry`를 현재 경로 `~/work/SCR/3layer/01_geometry`로 수정함
+- **다음 할 일:** 없음. 형상을 바꾸면 rev2로 진행하고 다시 승인 필요
 
 ## 격자 (02_mesh)
 - **상태:** 승인 완료 (rev0, 2026-11-11)
