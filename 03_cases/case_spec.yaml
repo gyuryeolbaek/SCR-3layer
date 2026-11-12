@@ -10,11 +10,11 @@
 # =====================================================================
 
 meta:
-  name: flow_2layer_avg      # 케이스 폴더 이름 (영문자로 시작, 03_cases/<name>/)
-  revision: 1
-  revision_note: "rev1: flow_2layer(rev0) 수렴 진단. 물리 조건 동일, 잔차 필드 저장 + 마지막 1000회 U·p 평균(fieldAverage) 추가"
+  name: flow_3layer         # 케이스 폴더 이름 (영문자로 시작, 03_cases/<name>/)
+  revision: 2
+  revision_note: "rev2: 3단 촉매 (active_layers에 catalyst_3 추가). 그 외 물리·수치·출력 설정은 flow_2layer_avg(rev1)와 동일 (잔차 필드, 마지막 1000회 U·p 평균)"
   stage: flow
-  scenario: "1.6 MW 이중연료 엔진, LNG 50% 부하. 검증용 2단 촉매 (3번째 층 촉매 없음)"
+  scenario: "1.6 MW 이중연료 엔진, LNG 50% 부하. 3단 촉매"
 
 mesh:
   dir: ../02_mesh            # MESH_APPROVED 필요
@@ -48,8 +48,8 @@ turbulence:
   laminarize_porous: true           # 촉매 채널 내부는 층류(채널 Re ≈ 수백) → 다공성 영역 k를 작게 고정
 
 catalyst:
-  active_layers: {value: [catalyst_1, catalyst_2], status: given,
-                  note: "검증 1단계: 2단. 3단 계산 시 catalyst_3 추가"}
+  active_layers: {value: [catalyst_1, catalyst_2, catalyst_3], status: given,
+                  note: "3단 계산 (rev2, 사용자 요청). 2단 결과는 flow_2layer_avg"}
   porosity: {value: 0.687, status: given, note: "개구율 68.7 % (논문 3.1절)"}
   permeability_k: {value: 2.34e-7, status: given, note: "사용자 제공 원본 값 (L=300 mm)"}
   drag_cF: {value: 2.3e-3, status: given, note: "사용자 제공 원본 값 (L=300 mm)"}

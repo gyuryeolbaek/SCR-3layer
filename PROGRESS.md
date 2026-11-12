@@ -9,8 +9,9 @@
 - 격자 단계 rev0을 사용자가 **승인했습니다** (`02_mesh/MESH_APPROVED`, 2026-11-11 17:31).
 - 계산 3-1단계(유동): `flow_2layer`(rev0)와 수렴 진단 케이스 `flow_2layer_avg`(rev1) 계산이 끝났습니다. 둘 다 판정 WARN.
 - 잔차 판정 기준을 사용자 결정에 따라 바꿨습니다 (잔차는 참고, 모니터 안정성 + 순간/평균 차이로 판정). `flow_2layer_avg`의 남은 WARN은 사용자가 인지한 촉매 물리 속도 2건뿐입니다.
-- 계산 3-2단계(열·반응): `react_2layer`(rev0, Chatterjee 원문 모델, 유동 `flow_2layer_avg` 고정) 계산 완료. 판정 **PASS**. **사용자 검토 대기**.
-- 다음: 반응 보고서 검토, 하우징 벽 y+(평균 12) 확인, 3단 계산(`flow_3layer` → 반응 3단).
+- 계산 3-2단계(열·반응): `react_2layer`(rev0, Chatterjee 원문 모델, 유동 `flow_2layer_avg` 고정) 계산 완료. 판정 **PASS**.
+- 계산 3-1단계 3단 유동: `flow_3layer`(case_spec rev2) 계산 완료. 판정 WARN (물리 속도 3건 + 전체 ΔP 순간/평균 차이 0.73 %). 촉매층 항목은 모두 PASS. **사용자 유동 결과 검토 대기** (확인 후 3단 반응 계산 진행 예정).
+- 다음: `flow_3layer` 검토 → `react_3layer`, 하우징 벽 y+(평균 13) 확인.
 
 ---
 
@@ -95,7 +96,16 @@
   - 촉매층 최저 온도 153~193 °C: 벽 근처 열손실(h 10 W/m²K) 영향. 저온 영역 반응 정확도 확인 필요
   - `solver/Allwmake`: 이 환경의 bashrc가 `$LIB_SRC`를 export하지 않아 헤더 검사에서 멈춤 → `export LIB_SRC=$WM_PROJECT_DIR/src` 후 컴파일함 (스크립트는 수정하지 않음)
   - 보고서 표기: chatterjee 모델인데 'NH3+NH3*' 열 이름과 '5.' 절 번호 중복 (보고서 생성 스크립트 표기 문제, 결과에는 영향 없음)
-- **다음 할 일:** 사용자 반응 보고서 검토 → 하우징 벽 y+ 확인 → 3단 계산(`flow_3layer` 확정 후 `react_3layer`)
+- **3단 유동 (`flow_3layer`, case_spec rev2, 2026-11-12):** active_layers에 catalyst_3 추가, 그 외 설정은 `flow_2layer_avg`와 같음 (잔차 필드, 마지막 1000회 U·p 평균). `./Allrun` 8코어 3000회, 약 9분 40초
+  - flow_report 판정 **WARN - 확인 필요** (FAIL 0, WARN 4): 촉매 물리 속도 범위 밖 3건(평균 6.4 m/s, 기존에 인지한 항목), 전체 ΔP 순간/평균 차이 0.73 % (기준 0.5 %, 2단은 0.31 %)
+  - 질량 보존 오차 0.000 %, 촉매층 ΔP 모니터 0.22/0.01/0.00 %, 촉매층 ΔP·γ의 순간/평균 차이 ≤ 0.03 % → 촉매층 결과는 수렴
+  - 2단 대비 (평균값): γ catalyst_1 0.894→0.894, catalyst_2 0.991→0.991, catalyst_3 0.967(새로 추가). ΔP catalyst_1 333.5→333.5, catalyst_2 350.0→350.0, catalyst_3 351.7 Pa (1D -1.9 %). 전체 ΔP 1188.5→1594.8 Pa (+406.3, catalyst_3 자체 손실보다 약 55 Pa 많음)
+  - 해석: catalyst_3을 추가해도 위쪽 두 층의 유동은 바뀌지 않음. catalyst_3은 출구 축소부가 바로 아래(간격 0.2 m)에 있어서 중앙 쪽 유속이 높아짐 (최대/평균 약 1.2)
+  - 잔차 상위 1 %: k·omega는 출구 덕트 99~100 %, p는 출구 덕트 71 %, 확장부 25 %
+  - y+: 하우징 0/41/평균 13, 확장부 7/175/54 → 벽함수 권장 범위보다 낮은 곳 있음 (2단과 같은 문제)
+- **확인 필요:** 전체 ΔP의 순간/평균 차이 0.73 % (출구 덕트 박리 영역이 흔들리기 때문으로 보임, 촉매층에는 영향 없음). 3단 반응 계산에 그대로 써도 되는지 사용자 판단 필요
+- **기타:** `scripts/check_reacting.py` 보고서 마지막 절 번호 5→6 수정 (기존 `react_2layer` 보고서는 보존을 위해 다시 만들지 않음)
+- **다음 할 일:** 사용자가 `flow_3layer` 검토 → `reacting_spec.yaml`의 `source_flow_case`와 `meta.name`(react_3layer)만 바꿔 `./Allreact` → 하우징 벽 y+ 확인
 
 ## 후처리 (04_reports)
 - **상태:** 미착수
@@ -121,3 +131,4 @@
 | 2026-11-11 | case_spec rev1: 새 케이스 `flow_2layer_avg`로 수렴 진단. 물리 조건·수치 설정은 rev0과 동일하고, 출력만 추가 (solverInfo `writeResidualFields yes`, 마지막 1000회 U·p `fieldAverage`). check_case.py는 UMean/pMean이 있으면 평균값으로 균일도·압력손실 판정 | rev0에서 잔차가 500회 이후 평평하고 전체 ΔP가 0.96% 흔들림 → 잔차가 큰 위치와 순간값/평균값 차이를 확인하기 위함. 기존 결과 보존 |
 | 2026-11-11 | 수렴 판정 기준 변경: 잔차(1e-5)는 참고(INFO), 판정은 촉매층 ΔP 모니터 안정성(≤0.5%)과 순간/평균 차이(≤0.5%, 촉매층 ΔP·전체 ΔP·γ). 최대 반복 도달도 INFO. residual_target 1e-5는 솔버 종료 조건으로만 유지 | flow_2layer_avg 진단: 잔차는 확장부·출구 덕트 박리 유동으로 p ~4e-2에서 평평하지만 촉매층 ΔP·γ의 순간/평균 차이 0.00%. 사용자 결정 (check_case.py, solve skill 반영) |
 | 2026-11-12 | 3-2단계 반응 모델을 Chatterjee et al. (SAE 2005-01-0965) 원문 형태(`chatterjee_coverage`)로 결정. NH3 피복률 θ는 촉매에 머물고 셀마다 정상상태 흡착점 수지로 계산, 속도는 촉매 부피당 × 고체 분율(1−ε). E_ox 원문 118 kJ/mol. Baek 논문 CFD-ACE+ 형태(`ace_pseudo_gas`)는 논문 재현용으로만 유지 | 사용자 결정. 원문 모델의 물리적 의미(흡착점 피복률)를 따르기 위함. 2단 계산(`react_2layer`) 판정 PASS, 1D 기준과 +0.07 %p |
+| 2026-11-12 | case_spec rev2: 3단 유동 케이스 `flow_3layer` (active_layers에 catalyst_3 추가). 출력 설정은 flow_2layer_avg와 같게(잔차 필드, field_average 1000회). 2단 결과(flow_2layer_avg, react_2layer)는 보존. 유동 결과를 사용자가 확인한 뒤 반응 계산 진행 | 사용자 요청. 3단 실제 구성 계산, 2단과 직접 비교하기 위함 |
