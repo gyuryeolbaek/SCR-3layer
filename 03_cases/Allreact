@@ -1,0 +1,30 @@
+#!/bin/bash
+# 3-2단계 열·반응 계산: reacting_spec → 케이스 생성 → scrSteadyFoam → 결과 보고서
+# 사용법: ./Allreact [reacting_spec.yaml] [--force]
+set -e
+cd "$(dirname "$0")"
+SPEC="reacting_spec.yaml"; FORCE=""
+for a in "$@"; do [ "$a" = "--force" ] && FORCE="--force" || SPEC="$a"; done
+
+command -v blockMesh >/dev/null || { echo "[STOP] OpenFOAM 환경이 로드되지 않음"; exit 1; }
+if [ -z "$VIRTUAL_ENV" ] && [ -f ~/venvs/cfd/bin/activate ]; then source ~/venvs/cfd/bin/activate; fi
+if ! command -v scrSteadyFoam >/dev/null; then
+    echo "[INFO] scrSteadyFoam이 없어 컴파일합니다."
+    ./solver/Allwmake
+fi
+
+python3 scripts/make_reacting_case.py "$SPEC" $FORCE
+CASE=$(python3 -c "import yaml;print(yaml.safe_load(open('$SPEC'))['meta']['name'])")
+cd "$CASE"
+source run.env
+echo "[RUN] $APP  (03_cases/$CASE/log.$APP) - 진행: tail -f 03_cases/$CASE/log.$APP"
+if [ "$N_PROCS" -gt 1 ]; then
+    decomposePar -force > log.decomposePar 2>&1
+    mpirun -np "$N_PROCS" "$APP" -parallel > "log.$APP" 2>&1 || echo "[WARN] $APP 비정상 종료 → 보고서에서 확인"
+    reconstructPar -latestTime > log.reconstructPar 2>&1
+    rm -rf processor*
+else
+    "$APP" > "log.$APP" 2>&1 || echo "[WARN] $APP 비정상 종료 → 보고서에서 확인"
+fi
+cd ..
+python3 scripts/check_reacting.py --case "$CASE" --spec "$SPEC"

@@ -28,3 +28,12 @@ VTK/
 
 # ---- Windows 복사 부산물 ----
 *:Zone.Identifier
+
+# ---- 솔버 빌드 산출물 (03_cases/solver) ----
+**/Make/linux64*/
+**/lnInclude/
+**/log.wmake
+# 반응 케이스의 고정 유동장(유동 케이스 결과 복사본, 14 MB): make_reacting_case.py로 재생성
+/03_cases/react_*/0/U
+/03_cases/react_*/0/phi
+/03_cases/react_*/0/nut

@@ -1,0 +1,10 @@
+#!/bin/bash
+# scrSteadyFoam 컴파일 (OpenFOAM 개발 패키지 필요: wmake, 헤더)
+# 결과: $FOAM_USER_APPBIN/scrSteadyFoam
+set -e
+cd "$(dirname "$0")/scrSteadyFoam"
+command -v wmake >/dev/null || { echo "[STOP] wmake 없음 → OpenFOAM 환경 로드 또는 개발 패키지 설치 (예: sudo apt install openfoam2606-dev)"; exit 1; }
+[ -f "$LIB_SRC/finiteVolume/lnInclude/fvCFD.H" ] || { echo "[STOP] OpenFOAM 헤더 없음 (\$LIB_SRC=$LIB_SRC) → 개발 패키지 설치 필요"; exit 1; }
+wclean >/dev/null 2>&1 || true
+wmake 2>&1 | tee log.wmake | tail -5
+command -v scrSteadyFoam >/dev/null && echo "[OK] $(command -v scrSteadyFoam)" || { echo "[FAIL] 컴파일 실패 → solver/scrSteadyFoam/log.wmake 확인"; exit 1; }

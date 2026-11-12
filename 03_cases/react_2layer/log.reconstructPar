@@ -1,0 +1,64 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2606                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _481094f-20260618 OPENFOAM=2606 version=2606
+Arch   : "LSB;label=32;scalar=64"
+Exec   : reconstructPar -latestTime
+Date   : Nov 12 2026
+Time   : 17:03:15
+Host   : grb-CRFL
+PID    : 80808
+I/O    : uncollated
+Case   : /home/grb_crfl/work/SCR/3layer/03_cases/react_2layer
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+memory pool : not available
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+
+--> FOAM Warning : allowSystemOperations : Allowing user-supplied system call operations.
+                   This can be a security risk if running untrusted cases
+                   through e.g. 'coded' on-the-fly-compilation functionality.
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+
+
+Reconstructing fields
+region=region0
+
+Time = 155
+
+Reconstructing FV fields
+
+    Reconstructing volScalarFields
+
+        H2O
+        NH3
+        NH3s
+        NO
+        O2
+        R_SCR
+        T
+        XNH3_ppm
+        XNH3s_ppm
+        XNO_ppm
+        kappaEff
+        porousMask
+        theta
+
+Reconstructing point fields
+
+No point fields
+
+No lagrangian fields
+
+No finite-area fields
+
+
+End
+
