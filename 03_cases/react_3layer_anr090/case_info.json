@@ -1,0 +1,32 @@
+{
+  "name": "react_3layer_anr090",
+  "revision": 1,
+  "stage": "reacting",
+  "source_flow_case": "flow_3layer",
+  "flow_time": "3000",
+  "T_in_K": 598.15,
+  "rho": 0.5707397791347171,
+  "porosity": 0.687,
+  "active_layers": [
+    "catalyst_1",
+    "catalyst_2",
+    "catalyst_3"
+  ],
+  "kinetics_model": "chatterjee_coverage",
+  "X_in": {
+    "NO": 0.00068,
+    "NH3": 0.000612,
+    "O2": 0.02,
+    "H2O": 0.01,
+    "N2": 0.968708
+  },
+  "Y_in": {
+    "NO": 0.0007290464047928261,
+    "NH3": 0.0003724171961615663,
+    "O2": 0.022866041360905125,
+    "H2O": 0.006436835663427492,
+    "N2": 0.969595659374713
+  },
+  "M_mix": 27.987354256,
+  "mass_flow_kg_s": 2.5102446561375236
+}

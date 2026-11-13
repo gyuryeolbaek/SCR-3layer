@@ -1,0 +1,1174 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2606                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _481094f-20260618 OPENFOAM=2606 version=2606
+Arch   : "LSB;label=32;scalar=64"
+Exec   : scrSteadyFoam -parallel
+Date   : Nov 13 2026
+Time   : 13:37:26
+Host   : grb-CRFL
+PID    : 334488
+I/O    : uncollated
+Case   : /home/grb_crfl/work/SCR/3layer/03_cases/react_3layer_anr105
+nProcs : 6
+Hosts  :
+(
+    (grb-CRFL 6)
+)
+Pstream initialized with:
+    node communication : off [type=host] (6 ranks, 1 nodes)
+    topology controls  : none
+    consensus exchange : 0 (tuning: 0)
+    exchange algorithm : 0
+    commsType          : nonBlocking
+    polling iterations : 0
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+memory pool : not available
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+
+--> FOAM Warning : allowSystemOperations : Allowing user-supplied system call operations.
+                   This can be a security risk if running untrusted cases
+                   through e.g. 'coded' on-the-fly-compilation functionality.
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Create mesh for time = 0
+
+Reading constant/scrProperties
+
+Reaction model: chatterjeeCoverage  (rates per catalyst volume x solid fraction 0.313)
+
+Reading frozen flow (phi, nut)
+
+Reading T, NO, NH3, O2, H2O
+
+Reactive porous cells: 93227 in zones 3(catalyst_1 catalyst_2 catalyst_3)
+
+
+Starting iterations
+
+Time = 1
+DILUPBiCGStab:  Solving for NO, Initial residual = 1, Final residual = 0.004829222672, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1, Final residual = 0.005018052664, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.9999999998, Final residual = 0.008565856527, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1, Final residual = 0.008565856528, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 0.9999999999, Final residual = 0.006588377659, No Iterations 6
+    eta_NO(outlet) = 0.01528343164 %, X_NH3,out = 713.8905541 ppm, X_NH3*,out = 0 ppm, T_out = 598.0226274 K, Q_wall = -43596.617 W
+ExecutionTime = 0.18 s  ClockTime = 0 s
+
+Time = 2
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.1493199316, Final residual = 0.0009831965608, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.1502114837, Final residual = 0.001026340344, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.1154442711, Final residual = 0.0009391415203, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.1155083254, Final residual = 0.000924038995, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 0.1413855064, Final residual = 0.001222405318, No Iterations 6
+    eta_NO(outlet) = 0.1504154333 %, X_NH3,out = 712.9283828 ppm, X_NH3*,out = 0 ppm, T_out = 597.944854 K, Q_wall = -42428.23608 W
+ExecutionTime = 0.33 s  ClockTime = 1 s
+
+Time = 3
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.04962112667, Final residual = 0.0004712866579, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.05021824752, Final residual = 0.0004444344089, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.1122809022, Final residual = 0.0009986976666, No Iterations 7
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.1128647435, Final residual = 0.000784778415, No Iterations 7
+DILUPBiCGStab:  Solving for T, Initial residual = 0.1423960814, Final residual = 0.0009344288262, No Iterations 6
+    eta_NO(outlet) = 0.6075268289 %, X_NH3,out = 709.6797887 ppm, X_NH3*,out = 0 ppm, T_out = 598.0656459 K, Q_wall = -41348.2307 W
+ExecutionTime = 0.49 s  ClockTime = 1 s
+
+Time = 4
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.03352660416, Final residual = 0.0002830242508, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.03384536118, Final residual = 0.0002621413414, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.08643223321, Final residual = 0.0006185599161, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.08658589313, Final residual = 0.0008511771597, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.1128891512, Final residual = 0.001064271782, No Iterations 5
+    eta_NO(outlet) = 1.666390806 %, X_NH3,out = 702.128003 ppm, X_NH3*,out = 0 ppm, T_out = 598.5731489 K, Q_wall = -40514.33749 W
+ExecutionTime = 0.62 s  ClockTime = 1 s
+
+Time = 5
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.02749767765, Final residual = 0.000176147641, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.0280960432, Final residual = 0.0001849692706, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.07693823096, Final residual = 0.0006255966523, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.07719269921, Final residual = 0.0007444952906, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.1018297211, Final residual = 0.0007711978637, No Iterations 5
+    eta_NO(outlet) = 3.606158361 %, X_NH3,out = 688.3036667 ppm, X_NH3*,out = 0 ppm, T_out = 599.6139436 K, Q_wall = -39863.6194 W
+ExecutionTime = 0.77 s  ClockTime = 1 s
+
+Time = 6
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.02421375682, Final residual = 0.0001996936767, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.02505352068, Final residual = 0.0002187417618, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.07386304429, Final residual = 0.00060593079, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.07410135437, Final residual = 0.0006580501703, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.09557349523, Final residual = 0.0007787233318, No Iterations 5
+    eta_NO(outlet) = 6.545530514 %, X_NH3,out = 667.3712769 ppm, X_NH3*,out = 0 ppm, T_out = 601.2067134 K, Q_wall = -39348.35222 W
+ExecutionTime = 0.93 s  ClockTime = 1 s
+
+Time = 7
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.02265311032, Final residual = 0.0002263058833, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.02386545968, Final residual = 0.0002296121866, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.07277515158, Final residual = 0.0003470049966, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.07295511753, Final residual = 0.0003529751273, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 0.08867098794, Final residual = 0.0005679582283, No Iterations 5
+    eta_NO(outlet) = 10.39821047 %, X_NH3,out = 639.8736452 ppm, X_NH3*,out = 0 ppm, T_out = 603.2223697 K, Q_wall = -38926.12252 W
+ExecutionTime = 1.08 s  ClockTime = 1 s
+
+Time = 8
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.02148297403, Final residual = 7.982437909e-05, No Iterations 5
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.02314658302, Final residual = 8.583240688e-05, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.07150476359, Final residual = 0.0004971193087, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.07164756878, Final residual = 0.0004173765304, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.08019821904, Final residual = 0.0006565706639, No Iterations 5
+    eta_NO(outlet) = 14.92096471 %, X_NH3,out = 607.5679901 ppm, X_NH3*,out = 0 ppm, T_out = 605.4272448 K, Q_wall = -38575.76275 W
+ExecutionTime = 1.23 s  ClockTime = 1 s
+
+Time = 9
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.02033193242, Final residual = 0.0001421673057, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.02250243477, Final residual = 0.0001555710456, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.06959134662, Final residual = 0.0006008641934, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.06970830214, Final residual = 0.0005039387198, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.06773365311, Final residual = 0.0005750780779, No Iterations 6
+    eta_NO(outlet) = 19.78787254 %, X_NH3,out = 572.8012417 ppm, X_NH3*,out = 0 ppm, T_out = 607.541741 K, Q_wall = -38293.3897 W
+ExecutionTime = 1.39 s  ClockTime = 2 s
+
+Time = 10
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.01914192332, Final residual = 0.0001210262196, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.02171196133, Final residual = 0.0001382530143, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.06673926081, Final residual = 0.0003246335278, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.06689200087, Final residual = 0.0004181722655, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.05660440342, Final residual = 0.0002072559605, No Iterations 6
+    eta_NO(outlet) = 24.76823907 %, X_NH3,out = 537.2257526 ppm, X_NH3*,out = 0 ppm, T_out = 609.3896019 K, Q_wall = -38058.6995 W
+ExecutionTime = 1.55 s  ClockTime = 2 s
+
+Time = 11
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.01795434181, Final residual = 0.0001212556474, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.020886789, Final residual = 0.0001406583813, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.06334911027, Final residual = 0.0005138920835, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.063513114, Final residual = 0.0005205444245, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0478714577, Final residual = 0.0001821237869, No Iterations 6
+    eta_NO(outlet) = 29.73321999 %, X_NH3,out = 501.7462364 ppm, X_NH3*,out = 0 ppm, T_out = 610.8696041 K, Q_wall = -37866.64431 W
+ExecutionTime = 1.68 s  ClockTime = 2 s
+
+Time = 12
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.01675780855, Final residual = 0.0001588113214, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.01995608961, Final residual = 0.0001946351006, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.05894499881, Final residual = 0.0005199238184, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0591020327, Final residual = 0.0005433989847, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.04078817937, Final residual = 0.0003650994923, No Iterations 4
+    eta_NO(outlet) = 34.67136707 %, X_NH3,out = 466.4675687 ppm, X_NH3*,out = 0 ppm, T_out = 611.9885759 K, Q_wall = -37707.75198 W
+ExecutionTime = 1.81 s  ClockTime = 2 s
+
+Time = 13
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.01558580707, Final residual = 0.0001385145573, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.01892674523, Final residual = 0.000180930925, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.05403410058, Final residual = 0.0002950369493, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.05419370418, Final residual = 0.0003100508681, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.03497359612, Final residual = 0.0003229058689, No Iterations 4
+    eta_NO(outlet) = 39.6511998 %, X_NH3,out = 430.9067665 ppm, X_NH3*,out = 0 ppm, T_out = 612.8200881 K, Q_wall = -37571.83092 W
+ExecutionTime = 1.94 s  ClockTime = 2 s
+
+Time = 14
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.01445293441, Final residual = 0.0001203373695, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.01778918279, Final residual = 0.0001752728777, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0488837731, Final residual = 0.0004426946668, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0490620476, Final residual = 0.0004353185965, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.03021346367, Final residual = 0.0002133478059, No Iterations 4
+    eta_NO(outlet) = 44.72805007 %, X_NH3,out = 394.6834704 ppm, X_NH3*,out = 0 ppm, T_out = 613.438987 K, Q_wall = -37452.35107 W
+ExecutionTime = 2.08 s  ClockTime = 2 s
+
+Time = 15
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.01329921709, Final residual = 9.912762428e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.01652678129, Final residual = 0.0001647815323, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.04385400733, Final residual = 0.0002895215236, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.04402244807, Final residual = 0.000292137599, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.02620958885, Final residual = 0.0001871530195, No Iterations 5
+    eta_NO(outlet) = 49.92033164 %, X_NH3,out = 357.6885882 ppm, X_NH3*,out = 0 ppm, T_out = 613.8937206 K, Q_wall = -37345.50204 W
+ExecutionTime = 2.24 s  ClockTime = 2 s
+
+Time = 16
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.01212908853, Final residual = 8.17795008e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.01514433179, Final residual = 0.0001406355281, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.03914265871, Final residual = 0.0003854511558, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.03936204366, Final residual = 0.0002548488077, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0230521909, Final residual = 0.0001635456748, No Iterations 4
+    eta_NO(outlet) = 55.19379131 %, X_NH3,out = 320.1508206 ppm, X_NH3*,out = 0 ppm, T_out = 614.2158465 K, Q_wall = -37247.10936 W
+ExecutionTime = 2.39 s  ClockTime = 3 s
+
+Time = 17
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.01091000155, Final residual = 6.608216889e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.01365692194, Final residual = 0.0001160799294, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.03518085289, Final residual = 0.0002235071841, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.03547539288, Final residual = 0.0002306601287, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.02042542861, Final residual = 0.0001366319868, No Iterations 4
+    eta_NO(outlet) = 60.46656337 %, X_NH3,out = 282.6390716 ppm, X_NH3*,out = 0 ppm, T_out = 614.4121462 K, Q_wall = -37154.39609 W
+ExecutionTime = 2.56 s  ClockTime = 3 s
+
+Time = 18
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.009665252387, Final residual = 9.180194676e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.01211549342, Final residual = 9.634974579e-05, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0318050975, Final residual = 0.0002260346524, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.03218589648, Final residual = 0.0002262965894, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.01827862929, Final residual = 0.000120101357, No Iterations 5
+    eta_NO(outlet) = 65.61425978 %, X_NH3,out = 245.9541487 ppm, X_NH3*,out = 0 ppm, T_out = 614.4707108 K, Q_wall = -37065.8176 W
+ExecutionTime = 2.69 s  ClockTime = 3 s
+
+Time = 19
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.008426890365, Final residual = 7.711379864e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.01055923294, Final residual = 7.669911076e-05, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.02901566171, Final residual = 0.0002707518441, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.02955598108, Final residual = 0.0002564253264, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.01663118645, Final residual = 0.0001590850935, No Iterations 4
+    eta_NO(outlet) = 70.53439931 %, X_NH3,out = 210.93321 ppm, X_NH3*,out = 0 ppm, T_out = 614.3556603 K, Q_wall = -36980.05191 W
+ExecutionTime = 2.82 s  ClockTime = 3 s
+
+Time = 20
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.007236964916, Final residual = 6.599446553e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.009044215329, Final residual = 6.329196083e-05, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.02675589341, Final residual = 0.0002484940508, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.02754527379, Final residual = 0.0001694491683, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.01531621436, Final residual = 8.641625794e-05, No Iterations 5
+    eta_NO(outlet) = 75.12084029 %, X_NH3,out = 178.3541501 ppm, X_NH3*,out = 0 ppm, T_out = 614.0350191 K, Q_wall = -36896.66236 W
+ExecutionTime = 2.96 s  ClockTime = 3 s
+
+Time = 21
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.006116732749, Final residual = 5.96517554e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.007614634902, Final residual = 5.427122994e-05, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.024984662, Final residual = 0.0001348305932, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0258875605, Final residual = 0.000121778151, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.01432635454, Final residual = 0.0001215693961, No Iterations 4
+    eta_NO(outlet) = 79.28778948 %, X_NH3,out = 148.8192875 ppm, X_NH3*,out = 0 ppm, T_out = 613.5002291 K, Q_wall = -36815.93481 W
+ExecutionTime = 3.1 s  ClockTime = 3 s
+
+Time = 22
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.005093316245, Final residual = 2.564183494e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.006314154892, Final residual = 5.025071751e-05, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0237225942, Final residual = 0.0001810039628, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.02471025255, Final residual = 0.0001692883026, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.01354328836, Final residual = 0.0001185056051, No Iterations 4
+    eta_NO(outlet) = 82.98673671 %, X_NH3,out = 122.7062601 ppm, X_NH3*,out = 0 ppm, T_out = 612.7558247 K, Q_wall = -36738.1114 W
+ExecutionTime = 3.25 s  ClockTime = 3 s
+
+Time = 23
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.004165432691, Final residual = 3.982204893e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.005165554028, Final residual = 2.244147276e-05, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.02294762133, Final residual = 0.000161519036, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.02401145902, Final residual = 9.622729342e-05, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.01285857551, Final residual = 0.0001076345479, No Iterations 4
+    eta_NO(outlet) = 86.17787693 %, X_NH3,out = 100.1227867 ppm, X_NH3*,out = 0 ppm, T_out = 611.8310007 K, Q_wall = -36663.84362 W
+ExecutionTime = 3.39 s  ClockTime = 4 s
+
+Time = 24
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.003386584046, Final residual = 2.035850532e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.004162275722, Final residual = 3.274378697e-05, No Iterations 3
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0224315003, Final residual = 0.0001571891346, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.02355488036, Final residual = 0.0001414241034, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.01216117242, Final residual = 8.971313761e-05, No Iterations 4
+    eta_NO(outlet) = 88.88430922 %, X_NH3,out = 81.10217411 ppm, X_NH3*,out = 0 ppm, T_out = 610.7655639 K, Q_wall = -36593.67737 W
+ExecutionTime = 3.55 s  ClockTime = 4 s
+
+Time = 25
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.002715876176, Final residual = 1.497488275e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.003336590985, Final residual = 1.612129428e-05, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.02201686043, Final residual = 0.0002068474858, No Iterations 3
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.02317653966, Final residual = 0.0002167900425, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0114139227, Final residual = 0.0001131075039, No Iterations 3
+    eta_NO(outlet) = 91.12976875 %, X_NH3,out = 65.30599922 ppm, X_NH3*,out = 0 ppm, T_out = 609.606903 K, Q_wall = -36528.11129 W
+ExecutionTime = 3.71 s  ClockTime = 4 s
+
+Time = 26
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.00216547646, Final residual = 1.356360326e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.002641711574, Final residual = 1.190606848e-05, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.02144257299, Final residual = 0.0001870610167, No Iterations 3
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.02263525559, Final residual = 0.000194558458, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.01061433776, Final residual = 0.0001036290723, No Iterations 3
+    eta_NO(outlet) = 92.96005401 %, X_NH3,out = 52.465219 ppm, X_NH3*,out = 0 ppm, T_out = 608.3944885 K, Q_wall = -36467.00266 W
+ExecutionTime = 3.84 s  ClockTime = 4 s
+
+Time = 27
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.00172185575, Final residual = 1.275054129e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.002079819559, Final residual = 9.713233013e-06, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.02060516527, Final residual = 0.0001644560327, No Iterations 3
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.02181315628, Final residual = 0.0001718736916, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.009785081293, Final residual = 9.662704662e-05, No Iterations 3
+    eta_NO(outlet) = 94.4315309 %, X_NH3,out = 42.17235757 ppm, X_NH3*,out = 0 ppm, T_out = 607.1668411 K, Q_wall = -36410.50905 W
+ExecutionTime = 3.99 s  ClockTime = 4 s
+
+Time = 28
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.00136620356, Final residual = 1.266746012e-05, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.001633888483, Final residual = 8.962564675e-06, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.01952705123, Final residual = 0.0001473638937, No Iterations 3
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.02072487613, Final residual = 0.0001535056026, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.008944779147, Final residual = 5.800423542e-05, No Iterations 4
+    eta_NO(outlet) = 95.60172571 %, X_NH3,out = 34.01557646 ppm, X_NH3*,out = 0 ppm, T_out = 605.9546846 K, Q_wall = -36358.55793 W
+ExecutionTime = 4.15 s  ClockTime = 4 s
+
+Time = 29
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.001083650286, Final residual = 3.513527122e-06, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.001280363491, Final residual = 8.752941389e-06, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.01823873926, Final residual = 0.0001343318999, No Iterations 3
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.01940641684, Final residual = 0.0001387977031, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.008109154978, Final residual = 7.818457091e-05, No Iterations 3
+    eta_NO(outlet) = 96.52772943 %, X_NH3,out = 27.61017122 ppm, X_NH3*,out = 0 ppm, T_out = 604.7893181 K, Q_wall = -36311.36728 W
+ExecutionTime = 4.31 s  ClockTime = 5 s
+
+Time = 30
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.0008565217565, Final residual = 6.378445419e-06, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.001003536541, Final residual = 5.26648415e-06, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.01680901285, Final residual = 0.0001260868064, No Iterations 3
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.01793548813, Final residual = 0.0001292468824, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.007301905551, Final residual = 7.216207004e-05, No Iterations 3
+    eta_NO(outlet) = 97.25086407 %, X_NH3,out = 22.61465343 ppm, X_NH3*,out = 0 ppm, T_out = 603.6866346 K, Q_wall = -36268.56635 W
+ExecutionTime = 4.47 s  ClockTime = 5 s
+
+Time = 31
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.0006826171021, Final residual = 6.415292064e-06, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.0007825711727, Final residual = 4.995511017e-06, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.01530022263, Final residual = 0.0001223236232, No Iterations 3
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.01636465155, Final residual = 0.0001255330812, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.006538528589, Final residual = 4.967622516e-05, No Iterations 4
+    eta_NO(outlet) = 97.81793657 %, X_NH3,out = 18.74095107 ppm, X_NH3*,out = 0 ppm, T_out = 602.6570872 K, Q_wall = -36229.9097 W
+ExecutionTime = 4.64 s  ClockTime = 5 s
+
+Time = 32
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.0005464969767, Final residual = 2.098943925e-06, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.0006130740763, Final residual = 4.58494117e-06, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.01376148022, Final residual = 0.000122569843, No Iterations 3
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.01475624894, Final residual = 0.0001262800229, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.005822408702, Final residual = 5.701356822e-05, No Iterations 3
+    eta_NO(outlet) = 98.26399745 %, X_NH3,out = 15.74117346 ppm, X_NH3*,out = 0 ppm, T_out = 601.7107024 K, Q_wall = -36195.30736 W
+ExecutionTime = 4.79 s  ClockTime = 5 s
+
+Time = 33
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.0004369759319, Final residual = 3.76204311e-06, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.0004801879696, Final residual = 3.40873084e-06, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.01223883316, Final residual = 0.0001160865516, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.01315616154, Final residual = 0.0001308697503, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.005164341831, Final residual = 3.449741501e-05, No Iterations 4
+    eta_NO(outlet) = 98.61211339 %, X_NH3,out = 13.42798057 ppm, X_NH3*,out = 0 ppm, T_out = 600.8487217 K, Q_wall = -36164.28324 W
+ExecutionTime = 4.96 s  ClockTime = 5 s
+
+Time = 34
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.0003530065869, Final residual = 1.268561823e-06, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.0003760451245, Final residual = 2.259492607e-06, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.01079392161, Final residual = 8.401206036e-05, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.01160136385, Final residual = 0.0001088943276, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.004562029829, Final residual = 4.50402706e-05, No Iterations 3
+    eta_NO(outlet) = 98.88751682 %, X_NH3,out = 11.6464379 ppm, X_NH3*,out = 0 ppm, T_out = 600.0728699 K, Q_wall = -36136.68798 W
+ExecutionTime = 5.11 s  ClockTime = 5 s
+
+Time = 35
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.0002850709473, Final residual = 2.162698633e-06, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.0002949443172, Final residual = 2.283523059e-06, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.009346451756, Final residual = 5.837329753e-05, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.01012963576, Final residual = 6.179997359e-05, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.004019368159, Final residual = 3.590026519e-05, No Iterations 4
+    eta_NO(outlet) = 99.10426961 %, X_NH3,out = 10.27597941 ppm, X_NH3*,out = 0 ppm, T_out = 599.3790707 K, Q_wall = -36112.06421 W
+ExecutionTime = 5.28 s  ClockTime = 6 s
+
+Time = 36
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.0002324415291, Final residual = 2.16706368e-06, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.0002321927909, Final residual = 2.24312133e-06, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.008017868804, Final residual = 7.713655587e-05, No Iterations 3
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.008684888486, Final residual = 7.080497455e-05, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.003535690433, Final residual = 2.47794381e-05, No Iterations 4
+    eta_NO(outlet) = 99.27677709 %, X_NH3,out = 9.224917247 ppm, X_NH3*,out = 0 ppm, T_out = 598.7642727 K, Q_wall = -36090.14477 W
+ExecutionTime = 5.45 s  ClockTime = 6 s
+
+Time = 37
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.0001902302813, Final residual = 6.685857609e-07, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.0001829972535, Final residual = 1.679257289e-06, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.006831334042, Final residual = 5.408610217e-05, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.007406117906, Final residual = 1.712462454e-05, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.00310848272, Final residual = 2.132891074e-05, No Iterations 4
+    eta_NO(outlet) = 99.41509797 %, X_NH3,out = 8.422951418 ppm, X_NH3*,out = 0 ppm, T_out = 598.2245407 K, Q_wall = -36070.65169 W
+ExecutionTime = 5.62 s  ClockTime = 6 s
+
+Time = 38
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.000155673648, Final residual = 1.010696486e-06, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.0001445515353, Final residual = 8.669670134e-07, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.005768597633, Final residual = 1.42923643e-05, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.006235720316, Final residual = 3.874482889e-05, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.002731759911, Final residual = 1.893433426e-05, No Iterations 4
+    eta_NO(outlet) = 99.52535686 %, X_NH3,out = 7.81077585 ppm, X_NH3*,out = 0 ppm, T_out = 597.7543769 K, Q_wall = -36053.28205 W
+ExecutionTime = 5.78 s  ClockTime = 6 s
+
+Time = 39
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.0001283585361, Final residual = 9.446566553e-07, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 0.0001146102544, Final residual = 7.773155333e-07, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.004801781881, Final residual = 4.04105646e-05, No Iterations 3
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.005221018468, Final residual = 4.361417143e-05, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.002404764328, Final residual = 2.394514048e-05, No Iterations 3
+    eta_NO(outlet) = 99.61416221 %, X_NH3,out = 7.347596599 ppm, X_NH3*,out = 0 ppm, T_out = 597.3473578 K, Q_wall = -36037.79469 W
+ExecutionTime = 5.94 s  ClockTime = 6 s
+
+Time = 40
+DILUPBiCGStab:  Solving for NO, Initial residual = 0.0001062325909, Final residual = 8.50054156e-07, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 9.158479614e-05, Final residual = 8.705820874e-07, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.00398729169, Final residual = 2.345405763e-05, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.00435486661, Final residual = 2.890715983e-05, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.002121662425, Final residual = 1.463057929e-05, No Iterations 4
+    eta_NO(outlet) = 99.68593051 %, X_NH3,out = 6.998451335 ppm, X_NH3*,out = 0 ppm, T_out = 596.9956565 K, Q_wall = -36023.87915 W
+ExecutionTime = 6.1 s  ClockTime = 6 s
+
+Time = 41
+DILUPBiCGStab:  Solving for NO, Initial residual = 8.82188256e-05, Final residual = 8.107943205e-07, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 7.381220576e-05, Final residual = 1.177176185e-07, No Iterations 6
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.003295752811, Final residual = 2.277579268e-05, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.003603461245, Final residual = 2.999616164e-05, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.001876342748, Final residual = 1.397603008e-05, No Iterations 4
+    eta_NO(outlet) = 99.74405531 %, X_NH3,out = 6.737165445 ppm, X_NH3*,out = 0 ppm, T_out = 596.6931692 K, Q_wall = -36011.39607 W
+ExecutionTime = 6.26 s  ClockTime = 7 s
+
+Time = 42
+DILUPBiCGStab:  Solving for NO, Initial residual = 7.356553031e-05, Final residual = 2.675667967e-07, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 5.971661033e-05, Final residual = 4.328659089e-07, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.002714698842, Final residual = 7.318803754e-06, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.002971911454, Final residual = 6.694203741e-06, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.001664666986, Final residual = 1.208896589e-05, No Iterations 4
+    eta_NO(outlet) = 99.79137431 %, X_NH3,out = 6.54282122 ppm, X_NH3*,out = 0 ppm, T_out = 596.43318 K, Q_wall = -36000.1403 W
+ExecutionTime = 6.43 s  ClockTime = 7 s
+
+Time = 43
+DILUPBiCGStab:  Solving for NO, Initial residual = 6.135676308e-05, Final residual = 4.265625246e-07, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 4.902098273e-05, Final residual = 7.845542031e-08, No Iterations 6
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.002217105391, Final residual = 2.057638044e-05, No Iterations 3
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.002424069089, Final residual = 2.377066952e-05, No Iterations 3
+DILUPBiCGStab:  Solving for T, Initial residual = 0.001482262773, Final residual = 1.065725696e-05, No Iterations 4
+    eta_NO(outlet) = 99.82961796 %, X_NH3,out = 6.39892767 ppm, X_NH3*,out = 0 ppm, T_out = 596.2095732 K, Q_wall = -35989.96036 W
+ExecutionTime = 6.59 s  ClockTime = 7 s
+
+Time = 44
+DILUPBiCGStab:  Solving for NO, Initial residual = 5.153357826e-05, Final residual = 4.299121353e-07, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 4.053662015e-05, Final residual = 3.319418443e-07, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.00181575304, Final residual = 1.592673671e-05, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.001984459337, Final residual = 1.689376053e-05, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.001325703337, Final residual = 9.606830216e-06, No Iterations 4
+    eta_NO(outlet) = 99.86075864 %, X_NH3,out = 6.292743613 ppm, X_NH3*,out = 0 ppm, T_out = 596.0167621 K, Q_wall = -35980.72457 W
+ExecutionTime = 6.73 s  ClockTime = 7 s
+
+Time = 45
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.343860589e-05, Final residual = 1.732251094e-07, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 3.402482779e-05, Final residual = 2.726324474e-07, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.001489368991, Final residual = 3.391904445e-06, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.001625234059, Final residual = 3.808475423e-06, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.001190294853, Final residual = 8.763232084e-06, No Iterations 4
+    eta_NO(outlet) = 99.88623052 %, X_NH3,out = 6.214638493 ppm, X_NH3*,out = 0 ppm, T_out = 595.8498016 K, Q_wall = -35972.31982 W
+ExecutionTime = 6.88 s  ClockTime = 7 s
+
+Time = 46
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.662642447e-05, Final residual = 2.477277087e-07, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 2.880490944e-05, Final residual = 1.286936257e-07, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.001209175456, Final residual = 6.322584602e-06, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.001317169267, Final residual = 6.975868776e-06, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.001072898056, Final residual = 8.061157219e-06, No Iterations 4
+    eta_NO(outlet) = 99.906912 %, X_NH3,out = 6.157166503 ppm, X_NH3*,out = 0 ppm, T_out = 595.7044053 K, Q_wall = -35964.65193 W
+ExecutionTime = 7.03 s  ClockTime = 7 s
+
+Time = 47
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.105976671e-05, Final residual = 2.351488362e-07, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 2.456872815e-05, Final residual = 1.58966581e-07, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0009873638088, Final residual = 5.088350543e-06, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.001073956464, Final residual = 7.336729535e-06, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0009705525264, Final residual = 7.440256515e-06, No Iterations 4
+    eta_NO(outlet) = 99.92380766 %, X_NH3,out = 6.114935549 ppm, X_NH3*,out = 0 ppm, T_out = 595.5769676 K, Q_wall = -35957.64155 W
+ExecutionTime = 7.19 s  ClockTime = 7 s
+
+Time = 48
+DILUPBiCGStab:  Solving for NO, Initial residual = 2.645847671e-05, Final residual = 2.588598713e-07, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 2.117260262e-05, Final residual = 1.79092381e-07, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0008048325638, Final residual = 4.924744966e-06, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0008756319986, Final residual = 6.727376737e-06, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0008807090961, Final residual = 6.860641559e-06, No Iterations 4
+    eta_NO(outlet) = 99.93761574 %, X_NH3,out = 6.083895946 ppm, X_NH3*,out = 0 ppm, T_out = 595.4645453 K, Q_wall = -35951.21948 W
+ExecutionTime = 7.36 s  ClockTime = 8 s
+
+Time = 49
+DILUPBiCGStab:  Solving for NO, Initial residual = 2.266821582e-05, Final residual = 1.274077958e-07, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.842513558e-05, Final residual = 8.50319318e-08, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0006574730638, Final residual = 4.369928318e-06, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0007142208634, Final residual = 6.190373899e-06, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0008013003865, Final residual = 6.316390135e-06, No Iterations 4
+    eta_NO(outlet) = 99.94895376 %, X_NH3,out = 6.061139839 ppm, X_NH3*,out = 0 ppm, T_out = 595.3647566 K, Q_wall = -35945.32679 W
+ExecutionTime = 7.49 s  ClockTime = 8 s
+
+Time = 50
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.943426419e-05, Final residual = 1.853575657e-07, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.613708825e-05, Final residual = 1.334064971e-07, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0005381768395, Final residual = 5.064254225e-06, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0005834978263, Final residual = 5.856941529e-07, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0007307186677, Final residual = 5.842198445e-06, No Iterations 4
+    eta_NO(outlet) = 99.95816707 %, X_NH3,out = 6.044672154 ppm, X_NH3*,out = 0 ppm, T_out = 595.2756825 K, Q_wall = -35939.91348 W
+ExecutionTime = 7.65 s  ClockTime = 8 s
+
+Time = 51
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.675287293e-05, Final residual = 7.346116413e-08, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.437453944e-05, Final residual = 3.485970395e-08, No Iterations 6
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0004422902538, Final residual = 1.927376326e-06, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0004734510195, Final residual = 3.083376635e-06, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0006677137016, Final residual = 5.418439471e-06, No Iterations 4
+    eta_NO(outlet) = 99.96573371 %, X_NH3,out = 6.032927308 ppm, X_NH3*,out = 0 ppm, T_out = 595.1957798 K, Q_wall = -35934.93521 W
+ExecutionTime = 7.82 s  ClockTime = 8 s
+
+Time = 52
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.441994344e-05, Final residual = 9.395704533e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.284232437e-05, Final residual = 8.449240378e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0003610981607, Final residual = 2.397525129e-06, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0003867431133, Final residual = 2.743010357e-06, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0006112004035, Final residual = 5.033121694e-06, No Iterations 4
+    eta_NO(outlet) = 99.97190814 %, X_NH3,out = 6.024779919 ppm, X_NH3*,out = 0 ppm, T_out = 595.1238018 K, Q_wall = -35930.35326 W
+ExecutionTime = 7.98 s  ClockTime = 8 s
+
+Time = 53
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.246834556e-05, Final residual = 7.792298333e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.156411719e-05, Final residual = 1.019646479e-07, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0002962628476, Final residual = 1.964991391e-06, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0003163557254, Final residual = 2.755143929e-06, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0005602323424, Final residual = 4.698822463e-06, No Iterations 4
+    eta_NO(outlet) = 99.97696048 %, X_NH3,out = 6.019414603 ppm, X_NH3*,out = 0 ppm, T_out = 595.0587255 K, Q_wall = -35926.13324 W
+ExecutionTime = 8.13 s  ClockTime = 8 s
+
+Time = 54
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.088062644e-05, Final residual = 6.973533757e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.047170274e-05, Final residual = 5.521160712e-08, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0002432931676, Final residual = 1.501836567e-06, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0002588262746, Final residual = 2.501436182e-06, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0005141768634, Final residual = 4.381647027e-06, No Iterations 4
+    eta_NO(outlet) = 99.98109584 %, X_NH3,out = 6.016156243 ppm, X_NH3*,out = 0 ppm, T_out = 594.9997058 K, Q_wall = -35922.24422 W
+ExecutionTime = 8.27 s  ClockTime = 9 s
+
+Time = 55
+DILUPBiCGStab:  Solving for NO, Initial residual = 9.526379988e-06, Final residual = 5.768347496e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 9.505713071e-06, Final residual = 6.663400058e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0001997420552, Final residual = 1.985946775e-06, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0002115369477, Final residual = 1.907067421e-06, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0004723669789, Final residual = 4.073360631e-06, No Iterations 4
+    eta_NO(outlet) = 99.98448861 %, X_NH3,out = 6.014554652 ppm, X_NH3*,out = 0 ppm, T_out = 594.9460403 K, Q_wall = -35918.65876 W
+ExecutionTime = 8.43 s  ClockTime = 9 s
+
+Time = 56
+DILUPBiCGStab:  Solving for NO, Initial residual = 8.372502192e-06, Final residual = 4.890046157e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 8.642684637e-06, Final residual = 6.298141159e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0001650429104, Final residual = 1.441825778e-06, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0001723021155, Final residual = 1.379139259e-06, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.000434381913, Final residual = 3.771891542e-06, No Iterations 4
+    eta_NO(outlet) = 99.98726621 %, X_NH3,out = 6.014226946 ppm, X_NH3*,out = 0 ppm, T_out = 594.8971409 K, Q_wall = -35915.35174 W
+ExecutionTime = 8.6 s  ClockTime = 9 s
+
+Time = 57
+DILUPBiCGStab:  Solving for NO, Initial residual = 7.392887002e-06, Final residual = 4.446152046e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 7.945715703e-06, Final residual = 4.884729166e-08, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.00013598752, Final residual = 1.280981511e-06, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0001400497668, Final residual = 1.974446277e-07, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0003997723651, Final residual = 3.501724607e-06, No Iterations 4
+    eta_NO(outlet) = 99.98953798 %, X_NH3,out = 6.014858533 ppm, X_NH3*,out = 0 ppm, T_out = 594.8525052 K, Q_wall = -35912.3005 W
+ExecutionTime = 8.76 s  ClockTime = 9 s
+
+Time = 58
+DILUPBiCGStab:  Solving for NO, Initial residual = 6.528481589e-06, Final residual = 4.023163801e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 7.39306366e-06, Final residual = 5.194847728e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 0.0001125190581, Final residual = 4.80974728e-07, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 0.0001136228416, Final residual = 8.833643906e-07, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0003681624916, Final residual = 3.22138613e-06, No Iterations 4
+    eta_NO(outlet) = 99.99140307 %, X_NH3,out = 6.016214978 ppm, X_NH3*,out = 0 ppm, T_out = 594.8116975 K, Q_wall = -35909.48481 W
+ExecutionTime = 8.92 s  ClockTime = 9 s
+
+Time = 59
+DILUPBiCGStab:  Solving for NO, Initial residual = 5.781838512e-06, Final residual = 3.328703067e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.953016899e-06, Final residual = 4.793161785e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 9.273370607e-05, Final residual = 7.114420936e-07, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 9.292332401e-05, Final residual = 7.169180265e-07, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0003392715119, Final residual = 2.955189265e-06, No Iterations 4
+    eta_NO(outlet) = 99.99292934 %, X_NH3,out = 6.018099547 ppm, X_NH3*,out = 0 ppm, T_out = 594.7743414 K, Q_wall = -35906.88541 W
+ExecutionTime = 9.07 s  ClockTime = 9 s
+
+Time = 60
+DILUPBiCGStab:  Solving for NO, Initial residual = 5.173462703e-06, Final residual = 3.360845524e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.554556543e-06, Final residual = 6.178019202e-08, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 7.703162018e-05, Final residual = 7.437419884e-07, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 7.594003109e-05, Final residual = 5.554648385e-07, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0003128206976, Final residual = 2.721222421e-06, No Iterations 4
+    eta_NO(outlet) = 99.99417527 %, X_NH3,out = 6.020354147 ppm, X_NH3*,out = 0 ppm, T_out = 594.7401046 K, Q_wall = -35904.4845 W
+ExecutionTime = 9.23 s  ClockTime = 9 s
+
+Time = 61
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.663464432e-06, Final residual = 2.929627018e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.128534791e-06, Final residual = 3.076214505e-08, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 6.42858691e-05, Final residual = 5.929315258e-07, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.201565208e-05, Final residual = 4.321595732e-07, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0002885627937, Final residual = 2.514258091e-06, No Iterations 4
+    eta_NO(outlet) = 99.99520239 %, X_NH3,out = 6.022848415 ppm, X_NH3*,out = 0 ppm, T_out = 594.7086925 K, Q_wall = -35902.26649 W
+ExecutionTime = 9.37 s  ClockTime = 10 s
+
+Time = 62
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.234962998e-06, Final residual = 2.541940354e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 5.647930451e-06, Final residual = 5.526987107e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 5.370407766e-05, Final residual = 2.671433142e-07, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 5.073876614e-05, Final residual = 3.558456576e-07, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.000266300628, Final residual = 2.326000219e-06, No Iterations 4
+    eta_NO(outlet) = 99.99604225 %, X_NH3,out = 6.025475096 ppm, X_NH3*,out = 0 ppm, T_out = 594.6798444 K, Q_wall = -35900.21693 W
+ExecutionTime = 9.51 s  ClockTime = 10 s
+
+Time = 63
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.854525092e-06, Final residual = 2.391282348e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 5.289549035e-06, Final residual = 4.023909124e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 4.497680354e-05, Final residual = 4.349979759e-07, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 4.155799978e-05, Final residual = 3.448177099e-07, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0002458617583, Final residual = 2.151147681e-06, No Iterations 4
+    eta_NO(outlet) = 99.99672944 %, X_NH3,out = 6.028166913 ppm, X_NH3*,out = 0 ppm, T_out = 594.6533261 K, Q_wall = -35898.32232 W
+ExecutionTime = 9.65 s  ClockTime = 10 s
+
+Time = 64
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.470737381e-06, Final residual = 2.194306291e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 4.956057783e-06, Final residual = 4.787139001e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 3.798611736e-05, Final residual = 3.265950473e-07, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 3.409472911e-05, Final residual = 3.349326143e-07, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0002270748886, Final residual = 1.993513611e-06, No Iterations 4
+    eta_NO(outlet) = 99.99729168 %, X_NH3,out = 6.030862256 ppm, X_NH3*,out = 0 ppm, T_out = 594.6289289 K, Q_wall = -35896.5708 W
+ExecutionTime = 9.79 s  ClockTime = 10 s
+
+Time = 65
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.125978527e-06, Final residual = 1.830416532e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 4.699792756e-06, Final residual = 3.606845961e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 3.201900717e-05, Final residual = 2.858831112e-07, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 2.797520099e-05, Final residual = 2.296570353e-07, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0002097899206, Final residual = 1.848779e-06, No Iterations 4
+    eta_NO(outlet) = 99.99775141 %, X_NH3,out = 6.033523986 ppm, X_NH3*,out = 0 ppm, T_out = 594.6064671 K, Q_wall = -35894.95148 W
+ExecutionTime = 9.94 s  ClockTime = 10 s
+
+Time = 66
+DILUPBiCGStab:  Solving for NO, Initial residual = 2.854063901e-06, Final residual = 2.293927111e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 4.494477401e-06, Final residual = 3.908379194e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 2.712526846e-05, Final residual = 1.784649333e-07, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 2.304158805e-05, Final residual = 1.189971948e-07, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0001938708224, Final residual = 1.715375958e-06, No Iterations 4
+    eta_NO(outlet) = 99.99812903 %, X_NH3,out = 6.036119395 ppm, X_NH3*,out = 0 ppm, T_out = 594.5857733 K, Q_wall = -35893.45354 W
+ExecutionTime = 10.08 s  ClockTime = 10 s
+
+Time = 67
+DILUPBiCGStab:  Solving for NO, Initial residual = 2.640765269e-06, Final residual = 1.651673799e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 4.238939446e-06, Final residual = 3.837079685e-08, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 2.305426639e-05, Final residual = 1.660833381e-07, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.908318311e-05, Final residual = 1.848737258e-07, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0001791973011, Final residual = 1.589179318e-06, No Iterations 4
+    eta_NO(outlet) = 99.99843614 %, X_NH3,out = 6.03863203 ppm, X_NH3*,out = 0 ppm, T_out = 594.566696 K, Q_wall = -35892.06808 W
+ExecutionTime = 10.25 s  ClockTime = 10 s
+
+Time = 68
+DILUPBiCGStab:  Solving for NO, Initial residual = 2.463282828e-06, Final residual = 1.522918935e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 3.895947044e-06, Final residual = 3.598087794e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.971832642e-05, Final residual = 1.524726747e-07, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.589075096e-05, Final residual = 1.574136027e-07, No Iterations 4
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0001656755884, Final residual = 1.471670134e-06, No Iterations 4
+    eta_NO(outlet) = 99.99868766 %, X_NH3,out = 6.041041795 ppm, X_NH3*,out = 0 ppm, T_out = 594.5490995 K, Q_wall = -35890.7865 W
+ExecutionTime = 10.41 s  ClockTime = 11 s
+
+Time = 69
+DILUPBiCGStab:  Solving for NO, Initial residual = 2.282539172e-06, Final residual = 1.434844209e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 3.666383441e-06, Final residual = 3.500232465e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.694683506e-05, Final residual = 1.310105661e-07, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.317398825e-05, Final residual = 9.724082816e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0001532035845, Final residual = 1.362781453e-06, No Iterations 4
+    eta_NO(outlet) = 99.99889326 %, X_NH3,out = 6.043351016 ppm, X_NH3*,out = 0 ppm, T_out = 594.5328608 K, Q_wall = -35889.60041 W
+ExecutionTime = 10.59 s  ClockTime = 11 s
+
+Time = 70
+DILUPBiCGStab:  Solving for NO, Initial residual = 2.070911335e-06, Final residual = 1.374547522e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 3.489246031e-06, Final residual = 2.997124576e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.461958849e-05, Final residual = 1.261932492e-07, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.09656664e-05, Final residual = 8.925145831e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0001416967402, Final residual = 1.262998609e-06, No Iterations 4
+    eta_NO(outlet) = 99.99906112 %, X_NH3,out = 6.045555089 ppm, X_NH3*,out = 0 ppm, T_out = 594.5178691 K, Q_wall = -35888.50317 W
+ExecutionTime = 10.75 s  ClockTime = 11 s
+
+Time = 71
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.911376913e-06, Final residual = 1.117451444e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 3.277364468e-06, Final residual = 1.57680295e-08, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.263490823e-05, Final residual = 1.113881634e-07, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 9.230941133e-06, Final residual = 8.381924842e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0001310651618, Final residual = 1.1700156e-06, No Iterations 4
+    eta_NO(outlet) = 99.99919822 %, X_NH3,out = 6.047651425 ppm, X_NH3*,out = 0 ppm, T_out = 594.5040239 K, Q_wall = -35887.48787 W
+ExecutionTime = 10.91 s  ClockTime = 11 s
+
+Time = 72
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.817670549e-06, Final residual = 1.093352067e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 3.099427251e-06, Final residual = 2.539186277e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.095177339e-05, Final residual = 7.38249022e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 7.800628945e-06, Final residual = 7.114962135e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0001212434193, Final residual = 1.083419574e-06, No Iterations 4
+    eta_NO(outlet) = 99.99931025 %, X_NH3,out = 6.049644799 ppm, X_NH3*,out = 0 ppm, T_out = 594.491234 K, Q_wall = -35886.54782 W
+ExecutionTime = 11.07 s  ClockTime = 11 s
+
+Time = 73
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.699846058e-06, Final residual = 1.017360173e-08, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 2.913477262e-06, Final residual = 1.897452205e-08, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 9.543538935e-06, Final residual = 8.581656313e-08, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.66747757e-06, Final residual = 5.749777257e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0001121723749, Final residual = 1.003059896e-06, No Iterations 4
+    eta_NO(outlet) = 99.99940162 %, X_NH3,out = 6.051539051 ppm, X_NH3*,out = 0 ppm, T_out = 594.4794161 K, Q_wall = -35885.67772 W
+ExecutionTime = 11.23 s  ClockTime = 11 s
+
+Time = 74
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.578962329e-06, Final residual = 9.726255777e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 2.681515125e-06, Final residual = 2.639830538e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 8.389007288e-06, Final residual = 8.203984968e-08, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 5.723652392e-06, Final residual = 4.35579817e-08, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 0.0001037933677, Final residual = 9.289419594e-07, No Iterations 4
+    eta_NO(outlet) = 99.99947632 %, X_NH3,out = 6.053337461 ppm, X_NH3*,out = 0 ppm, T_out = 594.468494 K, Q_wall = -35884.87221 W
+ExecutionTime = 11.37 s  ClockTime = 12 s
+
+Time = 75
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.471655942e-06, Final residual = 8.939070756e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 2.531633208e-06, Final residual = 2.264537772e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 7.372716552e-06, Final residual = 2.664367199e-08, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 4.89479004e-06, Final residual = 3.734822658e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 9.605223485e-05, Final residual = 8.60749624e-07, No Iterations 4
+    eta_NO(outlet) = 99.99953716 %, X_NH3,out = 6.055034758 ppm, X_NH3*,out = 0 ppm, T_out = 594.458398 K, Q_wall = -35884.12626 W
+ExecutionTime = 11.52 s  ClockTime = 12 s
+
+Time = 76
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.389499787e-06, Final residual = 7.654508198e-09, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 2.433909499e-06, Final residual = 1.665763928e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 6.486733809e-06, Final residual = 6.072239468e-08, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 4.198815058e-06, Final residual = 4.012244321e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 8.889816758e-05, Final residual = 7.978984583e-07, No Iterations 4
+    eta_NO(outlet) = 99.99958624 %, X_NH3,out = 6.056642536 ppm, X_NH3*,out = 0 ppm, T_out = 594.4490643 K, Q_wall = -35883.43563 W
+ExecutionTime = 11.66 s  ClockTime = 12 s
+
+Time = 77
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.340218082e-06, Final residual = 8.830407678e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 2.329010357e-06, Final residual = 1.543951927e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 5.754608451e-06, Final residual = 5.614603752e-08, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 3.587593579e-06, Final residual = 2.926963519e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 8.228514009e-05, Final residual = 7.39425634e-07, No Iterations 4
+    eta_NO(outlet) = 99.99962711 %, X_NH3,out = 6.058163477 ppm, X_NH3*,out = 0 ppm, T_out = 594.4404341 K, Q_wall = -35882.79627 W
+ExecutionTime = 11.82 s  ClockTime = 12 s
+
+Time = 78
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.28381909e-06, Final residual = 6.94917677e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 2.18010288e-06, Final residual = 1.859333719e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 5.154348976e-06, Final residual = 2.101389979e-08, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 3.083388321e-06, Final residual = 2.187752275e-08, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 7.616641346e-05, Final residual = 6.85491042e-07, No Iterations 4
+    eta_NO(outlet) = 99.99966016 %, X_NH3,out = 6.059601577 ppm, X_NH3*,out = 0 ppm, T_out = 594.4324533 K, Q_wall = -35882.204 W
+ExecutionTime = 11.99 s  ClockTime = 12 s
+
+Time = 79
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.188731549e-06, Final residual = 6.658852316e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.990171054e-06, Final residual = 1.803217853e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 4.599555738e-06, Final residual = 3.795258832e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 2.723348325e-06, Final residual = 1.323045185e-08, No Iterations 7
+DILUPBiCGStab:  Solving for T, Initial residual = 7.050904911e-05, Final residual = 6.360555127e-07, No Iterations 4
+    eta_NO(outlet) = 99.99968704 %, X_NH3,out = 6.060954479 ppm, X_NH3*,out = 0 ppm, T_out = 594.4250724 K, Q_wall = -35881.65554 W
+ExecutionTime = 12.17 s  ClockTime = 12 s
+
+Time = 80
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.09612024e-06, Final residual = 5.912953668e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.862158506e-06, Final residual = 1.227150801e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 4.115564013e-06, Final residual = 2.993775959e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 2.439805087e-06, Final residual = 2.172528216e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 6.527719498e-05, Final residual = 5.89292816e-07, No Iterations 4
+    eta_NO(outlet) = 99.99970898 %, X_NH3,out = 6.06222914 ppm, X_NH3*,out = 0 ppm, T_out = 594.4182454 K, Q_wall = -35881.14776 W
+ExecutionTime = 12.34 s  ClockTime = 13 s
+
+Time = 81
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.037954583e-06, Final residual = 5.884206114e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.828729135e-06, Final residual = 1.248999554e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 3.727011283e-06, Final residual = 2.188504701e-08, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 2.206536707e-06, Final residual = 1.773472674e-08, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 6.04381159e-05, Final residual = 5.461192185e-07, No Iterations 4
+    eta_NO(outlet) = 99.99972686 %, X_NH3,out = 6.063427954 ppm, X_NH3*,out = 0 ppm, T_out = 594.4119304 K, Q_wall = -35880.67715 W
+ExecutionTime = 12.51 s  ClockTime = 13 s
+
+Time = 82
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.020612625e-06, Final residual = 5.64352704e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.796636762e-06, Final residual = 1.582870218e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 3.412507379e-06, Final residual = 2.99486683e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 2.036928279e-06, Final residual = 1.917076078e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 5.596327304e-05, Final residual = 5.068343159e-07, No Iterations 4
+    eta_NO(outlet) = 99.99974138 %, X_NH3,out = 6.064555074 ppm, X_NH3*,out = 0 ppm, T_out = 594.4060884 K, Q_wall = -35880.24145 W
+ExecutionTime = 12.67 s  ClockTime = 13 s
+
+Time = 83
+DILUPBiCGStab:  Solving for NO, Initial residual = 1.010470334e-06, Final residual = 6.612952105e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.677107197e-06, Final residual = 1.511345014e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 3.080590033e-06, Final residual = 2.728909417e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.924103295e-06, Final residual = 1.373622452e-08, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 5.182300252e-05, Final residual = 4.698590824e-07, No Iterations 4
+    eta_NO(outlet) = 99.99975311 %, X_NH3,out = 6.065612237 ppm, X_NH3*,out = 0 ppm, T_out = 594.4006835 K, Q_wall = -35879.83805 W
+ExecutionTime = 12.82 s  ClockTime = 13 s
+
+Time = 84
+DILUPBiCGStab:  Solving for NO, Initial residual = 9.802868829e-07, Final residual = 4.90837464e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.547119395e-06, Final residual = 6.389237081e-09, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 2.759173443e-06, Final residual = 2.419660091e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.826525176e-06, Final residual = 1.665557636e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 4.799205291e-05, Final residual = 4.357022046e-07, No Iterations 4
+    eta_NO(outlet) = 99.99976283 %, X_NH3,out = 6.066597922 ppm, X_NH3*,out = 0 ppm, T_out = 594.3956825 K, Q_wall = -35879.46403 W
+ExecutionTime = 12.97 s  ClockTime = 13 s
+
+Time = 85
+DILUPBiCGStab:  Solving for NO, Initial residual = 8.97092313e-07, Final residual = 5.820271418e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.463457692e-06, Final residual = 1.151095649e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 2.498525943e-06, Final residual = 2.23552644e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.692734015e-06, Final residual = 1.019152406e-08, No Iterations 7
+DILUPBiCGStab:  Solving for T, Initial residual = 4.444939071e-05, Final residual = 4.042130067e-07, No Iterations 4
+    eta_NO(outlet) = 99.99977074 %, X_NH3,out = 6.067522068 ppm, X_NH3*,out = 0 ppm, T_out = 594.3910549 K, Q_wall = -35879.11776 W
+ExecutionTime = 13.11 s  ClockTime = 13 s
+
+Time = 86
+DILUPBiCGStab:  Solving for NO, Initial residual = 8.747366188e-07, Final residual = 6.975879647e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.419744166e-06, Final residual = 8.868388258e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 2.341543632e-06, Final residual = 1.784282036e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.538863795e-06, Final residual = 1.523108814e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 4.116914303e-05, Final residual = 3.746443153e-07, No Iterations 4
+    eta_NO(outlet) = 99.9997773 %, X_NH3,out = 6.068388307 ppm, X_NH3*,out = 0 ppm, T_out = 594.3867724 K, Q_wall = -35878.79691 W
+ExecutionTime = 13.28 s  ClockTime = 14 s
+
+Time = 87
+DILUPBiCGStab:  Solving for NO, Initial residual = 8.949952224e-07, Final residual = 4.974972852e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.407805788e-06, Final residual = 1.069011749e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 2.244477433e-06, Final residual = 2.092395631e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.437699489e-06, Final residual = 1.107527692e-08, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 3.813418704e-05, Final residual = 3.473005533e-07, No Iterations 4
+    eta_NO(outlet) = 99.9997825 %, X_NH3,out = 6.069195148 ppm, X_NH3*,out = 0 ppm, T_out = 594.3828089 K, Q_wall = -35878.49936 W
+ExecutionTime = 13.47 s  ClockTime = 14 s
+
+Time = 88
+DILUPBiCGStab:  Solving for NO, Initial residual = 8.292518252e-07, Final residual = 4.747658753e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.329821603e-06, Final residual = 1.01220245e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 2.149487385e-06, Final residual = 1.870647091e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.426513349e-06, Final residual = 1.385650922e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 3.53288622e-05, Final residual = 3.22627964e-07, No Iterations 4
+    eta_NO(outlet) = 99.99978676 %, X_NH3,out = 6.069947896 ppm, X_NH3*,out = 0 ppm, T_out = 594.3791402 K, Q_wall = -35878.22395 W
+ExecutionTime = 13.6 s  ClockTime = 14 s
+
+Time = 89
+DILUPBiCGStab:  Solving for NO, Initial residual = 7.486650655e-07, Final residual = 3.796260107e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.236952062e-06, Final residual = 1.039076224e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.959400129e-06, Final residual = 1.745246295e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.419006053e-06, Final residual = 9.237290241e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 3.272946153e-05, Final residual = 2.990913464e-07, No Iterations 4
+    eta_NO(outlet) = 99.99979028 %, X_NH3,out = 6.070652022 ppm, X_NH3*,out = 0 ppm, T_out = 594.3757441 K, Q_wall = -35877.96884 W
+ExecutionTime = 13.78 s  ClockTime = 14 s
+
+Time = 90
+DILUPBiCGStab:  Solving for NO, Initial residual = 7.223760357e-07, Final residual = 3.298563343e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.171567738e-06, Final residual = 8.279914643e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.771737474e-06, Final residual = 1.739984379e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.344946192e-06, Final residual = 5.329976689e-09, No Iterations 7
+DILUPBiCGStab:  Solving for T, Initial residual = 3.032017511e-05, Final residual = 2.772852128e-07, No Iterations 4
+    eta_NO(outlet) = 99.99979311 %, X_NH3,out = 6.071303636 ppm, X_NH3*,out = 0 ppm, T_out = 594.3726 K, Q_wall = -35877.73221 W
+ExecutionTime = 13.94 s  ClockTime = 14 s
+
+Time = 91
+DILUPBiCGStab:  Solving for NO, Initial residual = 6.916716334e-07, Final residual = 3.43773427e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.085573886e-06, Final residual = 8.662388112e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.653662568e-06, Final residual = 1.505090907e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.28094e-06, Final residual = 9.856898034e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 2.809201782e-05, Final residual = 2.571665198e-07, No Iterations 4
+    eta_NO(outlet) = 99.9997954 %, X_NH3,out = 6.071910553 ppm, X_NH3*,out = 0 ppm, T_out = 594.3696889 K, Q_wall = -35877.51297 W
+ExecutionTime = 14.12 s  ClockTime = 14 s
+
+Time = 92
+DILUPBiCGStab:  Solving for NO, Initial residual = 6.631851347e-07, Final residual = 4.184575835e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.041281327e-06, Final residual = 8.748369693e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.586231916e-06, Final residual = 1.55752745e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.256433687e-06, Final residual = 1.098203093e-08, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 2.602791948e-05, Final residual = 2.380756293e-07, No Iterations 4
+    eta_NO(outlet) = 99.99979729 %, X_NH3,out = 6.072481269 ppm, X_NH3*,out = 0 ppm, T_out = 594.3669933 K, Q_wall = -35877.30977 W
+ExecutionTime = 14.27 s  ClockTime = 15 s
+
+Time = 93
+DILUPBiCGStab:  Solving for NO, Initial residual = 6.612153072e-07, Final residual = 3.214083478e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 1.034244441e-06, Final residual = 1.012393583e-08, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.530603444e-06, Final residual = 1.224085555e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.218234443e-06, Final residual = 7.136920418e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 2.41166324e-05, Final residual = 2.206191605e-07, No Iterations 4
+    eta_NO(outlet) = 99.99979879 %, X_NH3,out = 6.073004247 ppm, X_NH3*,out = 0 ppm, T_out = 594.3644971 K, Q_wall = -35877.12134 W
+ExecutionTime = 14.44 s  ClockTime = 15 s
+
+Time = 94
+DILUPBiCGStab:  Solving for NO, Initial residual = 6.597525521e-07, Final residual = 4.787519732e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 9.910112113e-07, Final residual = 7.77771068e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.450695356e-06, Final residual = 1.072894799e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.242996304e-06, Final residual = 9.479055849e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 2.234935792e-05, Final residual = 2.049290677e-07, No Iterations 4
+    eta_NO(outlet) = 99.99979997 %, X_NH3,out = 6.073500709 ppm, X_NH3*,out = 0 ppm, T_out = 594.3621854 K, Q_wall = -35876.94682 W
+ExecutionTime = 14.61 s  ClockTime = 15 s
+
+Time = 95
+DILUPBiCGStab:  Solving for NO, Initial residual = 6.456479975e-07, Final residual = 1.194033569e-09, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 9.084218987e-07, Final residual = 6.554218324e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.298880568e-06, Final residual = 7.34705351e-09, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.201150466e-06, Final residual = 7.055515272e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 2.071279124e-05, Final residual = 1.900169044e-07, No Iterations 4
+    eta_NO(outlet) = 99.99980094 %, X_NH3,out = 6.073961547 ppm, X_NH3*,out = 0 ppm, T_out = 594.3600444 K, Q_wall = -35876.7853 W
+ExecutionTime = 14.78 s  ClockTime = 15 s
+
+Time = 96
+DILUPBiCGStab:  Solving for NO, Initial residual = 6.182671165e-07, Final residual = 5.658849243e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 8.886916005e-07, Final residual = 7.328098087e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.226564404e-06, Final residual = 5.566473546e-09, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.112675965e-06, Final residual = 8.496407366e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 1.919509372e-05, Final residual = 1.762091979e-07, No Iterations 4
+    eta_NO(outlet) = 99.99980171 %, X_NH3,out = 6.074392941 ppm, X_NH3*,out = 0 ppm, T_out = 594.3580612 K, Q_wall = -35876.63533 W
+ExecutionTime = 14.93 s  ClockTime = 15 s
+
+Time = 97
+DILUPBiCGStab:  Solving for NO, Initial residual = 5.596536534e-07, Final residual = 3.362326876e-10, No Iterations 5
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 8.800623609e-07, Final residual = 5.869906681e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.175104068e-06, Final residual = 9.798183397e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.094360864e-06, Final residual = 5.383146299e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 1.778976495e-05, Final residual = 1.635151564e-07, No Iterations 4
+    eta_NO(outlet) = 99.99980232 %, X_NH3,out = 6.074788355 ppm, X_NH3*,out = 0 ppm, T_out = 594.3562241 K, Q_wall = -35876.4964 W
+ExecutionTime = 15.1 s  ClockTime = 15 s
+
+Time = 98
+DILUPBiCGStab:  Solving for NO, Initial residual = 5.36207107e-07, Final residual = 9.742692722e-10, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 8.452621535e-07, Final residual = 2.451820352e-09, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.137778335e-06, Final residual = 1.095396576e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 1.043417613e-06, Final residual = 9.911337058e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 1.648679029e-05, Final residual = 1.513775404e-07, No Iterations 4
+    eta_NO(outlet) = 99.9998028 %, X_NH3,out = 6.075161205 ppm, X_NH3*,out = 0 ppm, T_out = 594.3545223 K, Q_wall = -35876.3677 W
+ExecutionTime = 15.28 s  ClockTime = 16 s
+
+Time = 99
+DILUPBiCGStab:  Solving for NO, Initial residual = 5.518297013e-07, Final residual = 2.619760232e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 8.529573199e-07, Final residual = 6.046928225e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.104089756e-06, Final residual = 1.063166772e-08, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 9.935083863e-07, Final residual = 7.015268141e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 1.528028566e-05, Final residual = 1.403375824e-07, No Iterations 4
+    eta_NO(outlet) = 99.99980318 %, X_NH3,out = 6.07550698 ppm, X_NH3*,out = 0 ppm, T_out = 594.3529456 K, Q_wall = -35876.24815 W
+ExecutionTime = 15.46 s  ClockTime = 16 s
+
+Time = 100
+DILUPBiCGStab:  Solving for NO, Initial residual = 5.616384926e-07, Final residual = 3.739531246e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 8.156487797e-07, Final residual = 6.14181856e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 1.041869891e-06, Final residual = 4.812090952e-09, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 9.830807488e-07, Final residual = 8.996881677e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 1.416490055e-05, Final residual = 1.30521672e-07, No Iterations 4
+    eta_NO(outlet) = 99.99980346 %, X_NH3,out = 6.075829311 ppm, X_NH3*,out = 0 ppm, T_out = 594.3514848 K, Q_wall = -35876.13752 W
+ExecutionTime = 15.6 s  ClockTime = 16 s
+
+Time = 101
+DILUPBiCGStab:  Solving for NO, Initial residual = 5.525416924e-07, Final residual = 1.077511468e-09, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 7.559892312e-07, Final residual = 4.909617962e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 9.326317087e-07, Final residual = 8.091064378e-09, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 9.40180962e-07, Final residual = 6.511141283e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 1.313099832e-05, Final residual = 1.209251006e-07, No Iterations 4
+    eta_NO(outlet) = 99.99980368 %, X_NH3,out = 6.076130534 ppm, X_NH3*,out = 0 ppm, T_out = 594.3501313 K, Q_wall = -35876.03508 W
+ExecutionTime = 15.76 s  ClockTime = 16 s
+
+Time = 102
+DILUPBiCGStab:  Solving for NO, Initial residual = 5.128170305e-07, Final residual = 4.567695415e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 7.683383568e-07, Final residual = 4.983372731e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 9.091541385e-07, Final residual = 8.574792345e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 8.62964349e-07, Final residual = 5.491845372e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 1.217128351e-05, Final residual = 1.121586386e-07, No Iterations 4
+    eta_NO(outlet) = 99.99980384 %, X_NH3,out = 6.076410888 ppm, X_NH3*,out = 0 ppm, T_out = 594.3488772 K, Q_wall = -35875.93998 W
+ExecutionTime = 15.92 s  ClockTime = 16 s
+
+Time = 103
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.408814053e-07, Final residual = 4.193198147e-09, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 7.702634166e-07, Final residual = 7.407933196e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 9.011170641e-07, Final residual = 4.623578028e-09, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 8.540648078e-07, Final residual = 7.162899174e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 1.128211676e-05, Final residual = 1.04143481e-07, No Iterations 4
+    eta_NO(outlet) = 99.99980395 %, X_NH3,out = 6.076668819 ppm, X_NH3*,out = 0 ppm, T_out = 594.347715 K, Q_wall = -35875.85183 W
+ExecutionTime = 16.06 s  ClockTime = 16 s
+
+Time = 104
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.286538447e-07, Final residual = 7.255218252e-10, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 7.615167291e-07, Final residual = 5.422570025e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 8.674516717e-07, Final residual = 6.423427262e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 8.721398119e-07, Final residual = 4.849829519e-09, No Iterations 7
+DILUPBiCGStab:  Solving for T, Initial residual = 1.045586341e-05, Final residual = 9.637478713e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980403 %, X_NH3,out = 6.076911741 ppm, X_NH3*,out = 0 ppm, T_out = 594.3466381 K, Q_wall = -35875.77021 W
+ExecutionTime = 16.24 s  ClockTime = 16 s
+
+Time = 105
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.46089314e-07, Final residual = 4.300994798e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 7.233108955e-07, Final residual = 5.279507639e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 8.616282262e-07, Final residual = 6.66505562e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 8.261761831e-07, Final residual = 7.284147278e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 9.691250911e-06, Final residual = 8.941238479e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980408 %, X_NH3,out = 6.07713758 ppm, X_NH3*,out = 0 ppm, T_out = 594.3456402 K, Q_wall = -35875.69426 W
+ExecutionTime = 16.39 s  ClockTime = 17 s
+
+Time = 106
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.420496196e-07, Final residual = 3.413836393e-09, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.912992717e-07, Final residual = 4.59828649e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 8.279972393e-07, Final residual = 2.270912036e-09, No Iterations 7
+DILUPBiCGStab:  Solving for H2O, Initial residual = 8.268177854e-07, Final residual = 3.294006706e-09, No Iterations 7
+DILUPBiCGStab:  Solving for T, Initial residual = 8.986074731e-06, Final residual = 8.329604388e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980411 %, X_NH3,out = 6.077349332 ppm, X_NH3*,out = 0 ppm, T_out = 594.3447153 K, Q_wall = -35875.62404 W
+ExecutionTime = 16.55 s  ClockTime = 17 s
+
+Time = 107
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.23919272e-07, Final residual = 7.435908993e-10, No Iterations 4
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.638633978e-07, Final residual = 5.765312693e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 7.314019177e-07, Final residual = 2.343388946e-09, No Iterations 7
+DILUPBiCGStab:  Solving for H2O, Initial residual = 8.126105125e-07, Final residual = 7.91737523e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 8.332387409e-06, Final residual = 7.705375281e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980412 %, X_NH3,out = 6.077544882 ppm, X_NH3*,out = 0 ppm, T_out = 594.3438582 K, Q_wall = -35875.55916 W
+ExecutionTime = 16.7 s  ClockTime = 17 s
+
+Time = 108
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.131062353e-07, Final residual = 1.971963822e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.547790596e-07, Final residual = 4.299364067e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 7.278354479e-07, Final residual = 6.840268906e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 7.537129609e-07, Final residual = 7.01597774e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 7.724297066e-06, Final residual = 7.158258029e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980411 %, X_NH3,out = 6.077728304 ppm, X_NH3*,out = 0 ppm, T_out = 594.3430638 K, Q_wall = -35875.49876 W
+ExecutionTime = 16.85 s  ClockTime = 17 s
+
+Time = 109
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.19222386e-07, Final residual = 2.699550206e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.44331664e-07, Final residual = 5.417218271e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 7.344553591e-07, Final residual = 1.824380217e-09, No Iterations 7
+DILUPBiCGStab:  Solving for H2O, Initial residual = 7.6926403e-07, Final residual = 3.592793381e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 7.161157936e-06, Final residual = 6.642176518e-08, No Iterations 4
+    eta_NO(outlet) = 99.9998041 %, X_NH3,out = 6.077897594 ppm, X_NH3*,out = 0 ppm, T_out = 594.3423275 K, Q_wall = -35875.44282 W
+ExecutionTime = 17.01 s  ClockTime = 17 s
+
+Time = 110
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.559916928e-07, Final residual = 3.28951889e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.278502084e-07, Final residual = 5.038565945e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 7.19964008e-07, Final residual = 5.866246268e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 7.417924489e-07, Final residual = 1.249155341e-09, No Iterations 8
+DILUPBiCGStab:  Solving for T, Initial residual = 6.638232518e-06, Final residual = 6.13022091e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980408 %, X_NH3,out = 6.078055335 ppm, X_NH3*,out = 0 ppm, T_out = 594.3416451 K, Q_wall = -35875.39101 W
+ExecutionTime = 17.19 s  ClockTime = 17 s
+
+Time = 111
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.68874211e-07, Final residual = 4.556448623e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.056599004e-07, Final residual = 4.486586911e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 7.249010217e-07, Final residual = 2.657369264e-09, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.691144555e-07, Final residual = 6.500943207e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 6.155193251e-06, Final residual = 5.690906709e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980405 %, X_NH3,out = 6.078202689 ppm, X_NH3*,out = 0 ppm, T_out = 594.3410126 K, Q_wall = -35875.34273 W
+ExecutionTime = 17.36 s  ClockTime = 18 s
+
+Time = 112
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.200342383e-07, Final residual = 3.630218823e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.268844202e-07, Final residual = 4.740379191e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 7.268077306e-07, Final residual = 5.361475619e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.99523619e-07, Final residual = 4.531822024e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 5.709911962e-06, Final residual = 5.316267025e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980401 %, X_NH3,out = 6.078339249 ppm, X_NH3*,out = 0 ppm, T_out = 594.3404263 K, Q_wall = -35875.2982 W
+ExecutionTime = 17.52 s  ClockTime = 18 s
+
+Time = 113
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.829299634e-07, Final residual = 2.962184087e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.205164839e-07, Final residual = 1.277352542e-09, No Iterations 5
+DILUPBiCGStab:  Solving for O2, Initial residual = 7.195050397e-07, Final residual = 5.48763342e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 7.231318668e-07, Final residual = 1.095845381e-09, No Iterations 8
+DILUPBiCGStab:  Solving for T, Initial residual = 5.295253316e-06, Final residual = 4.897149633e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980398 %, X_NH3,out = 6.078469493 ppm, X_NH3*,out = 0 ppm, T_out = 594.3398828 K, Q_wall = -35875.25712 W
+ExecutionTime = 17.7 s  ClockTime = 18 s
+
+Time = 114
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.791538138e-07, Final residual = 3.594816102e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 6.024634688e-07, Final residual = 3.707356801e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 7.027769384e-07, Final residual = 5.525036405e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.837783659e-07, Final residual = 5.20754574e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 4.907575881e-06, Final residual = 4.55976619e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980394 %, X_NH3,out = 6.078588043 ppm, X_NH3*,out = 0 ppm, T_out = 594.3393791 K, Q_wall = -35875.21867 W
+ExecutionTime = 17.84 s  ClockTime = 18 s
+
+Time = 115
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.450519164e-07, Final residual = 2.641294709e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 5.923574164e-07, Final residual = 4.43134698e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 6.738031071e-07, Final residual = 5.246738418e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.71968621e-07, Final residual = 6.158605927e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 4.550060194e-06, Final residual = 4.224167313e-08, No Iterations 4
+    eta_NO(outlet) = 99.9998039 %, X_NH3,out = 6.078696895 ppm, X_NH3*,out = 0 ppm, T_out = 594.3389121 K, Q_wall = -35875.18316 W
+ExecutionTime = 17.99 s  ClockTime = 18 s
+
+Time = 116
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.387463241e-07, Final residual = 2.387140574e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 5.689915309e-07, Final residual = 3.47283765e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 6.506907716e-07, Final residual = 6.488910715e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.67058337e-07, Final residual = 4.969038606e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 4.217294769e-06, Final residual = 3.885017779e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980386 %, X_NH3,out = 6.078798963 ppm, X_NH3*,out = 0 ppm, T_out = 594.3384792 K, Q_wall = -35875.15027 W
+ExecutionTime = 18.15 s  ClockTime = 18 s
+
+Time = 117
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.648570514e-07, Final residual = 2.200813301e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 5.268590428e-07, Final residual = 4.343064206e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 6.516959854e-07, Final residual = 5.807331143e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.62814761e-07, Final residual = 5.396835803e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 3.910148503e-06, Final residual = 3.618420579e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980382 %, X_NH3,out = 6.078892192 ppm, X_NH3*,out = 0 ppm, T_out = 594.3380779 K, Q_wall = -35875.11957 W
+ExecutionTime = 18.3 s  ClockTime = 19 s
+
+Time = 118
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.942211138e-07, Final residual = 3.594128525e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 5.185595327e-07, Final residual = 3.894059726e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 6.374468525e-07, Final residual = 6.105712826e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.729435186e-07, Final residual = 4.490052331e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 3.62788866e-06, Final residual = 3.39071695e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980379 %, X_NH3,out = 6.078979054 ppm, X_NH3*,out = 0 ppm, T_out = 594.3377058 K, Q_wall = -35875.09127 W
+ExecutionTime = 18.44 s  ClockTime = 19 s
+
+Time = 119
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.069966469e-07, Final residual = 3.318830341e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 5.280301285e-07, Final residual = 3.635391663e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 5.997677318e-07, Final residual = 3.918770672e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.35029874e-07, Final residual = 1.773347644e-09, No Iterations 7
+DILUPBiCGStab:  Solving for T, Initial residual = 3.366286801e-06, Final residual = 3.093129662e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980375 %, X_NH3,out = 6.079060192 ppm, X_NH3*,out = 0 ppm, T_out = 594.3373609 K, Q_wall = -35875.06519 W
+ExecutionTime = 18.58 s  ClockTime = 19 s
+
+Time = 120
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.855014517e-07, Final residual = 3.161552625e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 5.32087828e-07, Final residual = 3.591916973e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 6.418153343e-07, Final residual = 6.399865163e-09, No Iterations 4
+DILUPBiCGStab:  Solving for H2O, Initial residual = 5.830794058e-07, Final residual = 4.955660114e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 3.121979648e-06, Final residual = 2.909946504e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980372 %, X_NH3,out = 6.079135269 ppm, X_NH3*,out = 0 ppm, T_out = 594.3370412 K, Q_wall = -35875.04086 W
+ExecutionTime = 18.74 s  ClockTime = 19 s
+
+Time = 121
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.645687516e-07, Final residual = 2.892875404e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 5.376139658e-07, Final residual = 3.832045193e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 6.838720593e-07, Final residual = 5.63182145e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.140943172e-07, Final residual = 4.711641642e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 2.894895645e-06, Final residual = 2.680865752e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980368 %, X_NH3,out = 6.079204819 ppm, X_NH3*,out = 0 ppm, T_out = 594.3367447 K, Q_wall = -35875.01824 W
+ExecutionTime = 18.88 s  ClockTime = 19 s
+
+Time = 122
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.877351084e-07, Final residual = 3.072913555e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 4.995832163e-07, Final residual = 3.387032758e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 6.278533457e-07, Final residual = 1.982071591e-09, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 6.370644317e-07, Final residual = 3.747297849e-09, No Iterations 6
+DILUPBiCGStab:  Solving for T, Initial residual = 2.683215443e-06, Final residual = 2.454253107e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980365 %, X_NH3,out = 6.079269601 ppm, X_NH3*,out = 0 ppm, T_out = 594.3364699 K, Q_wall = -35874.9974 W
+ExecutionTime = 19.03 s  ClockTime = 19 s
+
+Time = 123
+DILUPBiCGStab:  Solving for NO, Initial residual = 4.029041239e-07, Final residual = 3.552328979e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 4.709989478e-07, Final residual = 3.319060755e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 5.801526262e-07, Final residual = 2.113395245e-09, No Iterations 6
+DILUPBiCGStab:  Solving for H2O, Initial residual = 5.960162678e-07, Final residual = 5.26661571e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 2.488620582e-06, Final residual = 2.291674176e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980362 %, X_NH3,out = 6.079329879 ppm, X_NH3*,out = 0 ppm, T_out = 594.3362152 K, Q_wall = -35874.97782 W
+ExecutionTime = 19.18 s  ClockTime = 19 s
+
+Time = 124
+DILUPBiCGStab:  Solving for NO, Initial residual = 3.725198674e-07, Final residual = 2.858392384e-09, No Iterations 3
+DILUPBiCGStab:  Solving for NH3tot, Initial residual = 4.833117e-07, Final residual = 2.385204403e-09, No Iterations 4
+DILUPBiCGStab:  Solving for O2, Initial residual = 5.650508072e-07, Final residual = 4.500281954e-09, No Iterations 5
+DILUPBiCGStab:  Solving for H2O, Initial residual = 5.68541109e-07, Final residual = 4.221346704e-09, No Iterations 5
+DILUPBiCGStab:  Solving for T, Initial residual = 2.309828861e-06, Final residual = 2.172630737e-08, No Iterations 4
+    eta_NO(outlet) = 99.99980359 %, X_NH3,out = 6.079387609 ppm, X_NH3*,out = 0 ppm, T_out = 594.3359789 K, Q_wall = -35874.95985 W
+
+scrSteadyFoam: converged (residuals < 0.0001, |d eta| < 1e-06 for 50 iterations)
+
+End
+
+Finalising parallel run

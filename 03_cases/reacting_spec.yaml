@@ -8,12 +8,13 @@
 # =====================================================================
 
 meta:
-  name: react_2layer
-  revision: 0
-  scenario: "1.6 MW 이중연료 엔진, LNG 50% 부하. 2단 촉매, Chatterjee 반응 모델"
+  name: react_3layer
+  revision: 1
+  revision_note: "rev1: 3단 촉매 (source_flow_case flow_3layer). 반응·물성·입구·벽 조건은 react_2layer(rev0)와 동일"
+  scenario: "1.6 MW 이중연료 엔진, LNG 50% 부하. 3단 촉매, Chatterjee 반응 모델"
 
-source_flow_case: {value: flow_2layer_avg, status: given,
-                   note: "확정된 2단 유동 결과. 촉매층(cellZone)과 입구 온도·밀도도 이 케이스에서 가져옴"}
+source_flow_case: {value: flow_3layer, status: given,
+                   note: "확정된 3단 유동 결과 (2026-11-13 확정, 전체 ΔP 불확실성 ±12 Pa). 촉매층(cellZone)과 입구 온도·밀도도 이 케이스에서 가져옴"}
 
 gas:
   inlet_mole_fraction:          # 키는 따옴표 필수 (YAML에서 NO는 false로 읽힘)
