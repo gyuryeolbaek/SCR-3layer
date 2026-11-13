@@ -1,0 +1,58 @@
+{
+  "name": "flow_3layer_m7000",
+  "revision": 3,
+  "stage": "flow",
+  "T_in_K": 598.15,
+  "rho": 0.5707397791347171,
+  "mu": 2.9052204139240355e-05,
+  "nu": 5.0902714689495805e-05,
+  "inlet_condition": "mass_flow",
+  "inlet_velocity": 27.147494456355872,
+  "inlet_diameter": 0.4,
+  "inlet_area": 0.12549535264679934,
+  "inlet_area_circle": 0.12566370614359174,
+  "mass_flow_kg_h_nominal": 7000.0,
+  "k_in": 2.7636992072170234,
+  "omega_in": 108.39936254144719,
+  "active_layers": [
+    "catalyst_1",
+    "catalyst_2",
+    "catalyst_3"
+  ],
+  "porosity": 0.687,
+  "porous_coeffs": {
+    "d_axial": 4273504.273504273,
+    "f_axial": 9.509329651839314,
+    "d_transverse": 42735042735.04273,
+    "f_transverse": 95093.29651839314,
+    "e1": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "e2": [
+      0.0,
+      1.0,
+      0.0
+    ]
+  },
+  "monitor_planes": {
+    "catalyst_1_in": 2.72,
+    "catalyst_1_out": 2.08,
+    "catalyst_2_in": 1.77,
+    "catalyst_2_out": 1.13,
+    "catalyst_3_in": 0.8200000000000001,
+    "catalyst_3_out": 0.18
+  },
+  "cell_size": 0.05,
+  "write_residual_fields": true,
+  "field_average": {
+    "enabled": true,
+    "window": 1000,
+    "fields": [
+      "U",
+      "p"
+    ],
+    "time_start": 2000
+  }
+}

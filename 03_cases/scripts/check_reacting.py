@@ -180,15 +180,19 @@ def main():
     import contextlib, io
     with contextlib.redirect_stdout(io.StringIO()):
         old = sys.argv; sys.argv = ["x", args.spec]
-        mr_rows, mr_worst, mr_ok = verify_kinetics_1d.main()
+        mr_rows, mr_worst, mr_ok, mr_worst_exp = verify_kinetics_1d.main()
         sys.argv = old
     kmodel = v(kin["model"])
     if kmodel == "ace_pseudo_gas":
         rec("PASS" if mr_ok else "FAIL", "반응식 검증: 마이크로리액터 재현 (1D)",
             f"CFD-ACE+ 결과 대비 최대 {mr_worst:.2f} %p (허용 {spec['validation']['microreactor']['tolerance_pct_point']} %p)")
     else:
-        rec("INFO", "마이크로리액터 비교 (1D, Chatterjee 원문 모델 vs CFD-ACE+ 모델)",
-            f"최대 차이 {mr_worst:.2f} %p - 다른 모델이므로 참고용 (4절 표)")
+        if mr_worst_exp is not None:
+            rec("INFO", "마이크로리액터 비교 (1D, Chatterjee 원문 모델 vs 실험 Koo et al. 2016 Fig. 8 fresh)",
+                f"최대 차이 {mr_worst_exp:+.2f} %p - 판정 없음 (4절 표, CFD-ACE+ 모델 대비 최대 {mr_worst:.2f} %p)")
+        else:
+            rec("INFO", "마이크로리액터 비교 (1D, Chatterjee 원문 모델 vs CFD-ACE+ 모델)",
+                f"최대 차이 {mr_worst:.2f} %p - 다른 모델이므로 참고용 (4절 표)")
 
     # 층별 (논문 field-average: 층 끝 단면 면적 평균)
     h = 0.05
@@ -316,8 +320,14 @@ def main():
     L += ["", "## 3. 그림", "", "![sections](reacting_sections.png)", "", "![axial](reacting_axial.png)", "",
           "![radial](reacting_radial_T.png)", "", "![conv](reacting_convergence.png)", "",
           f"## 4. 마이크로리액터 비교 (1D, 등온, 모델: {v(kin['model'])})", "",
-          "| T [°C] | U [m/s] | CFD-ACE+ [%] | 1D [%] | 차이 [%p] |", "|---|---|---|---|---|",
-          *[f"| {r[0]:.0f} | {r[1]:.3f} | {r[2]:.1f} | {r[3]:.1f} | {r[4]:+.2f} |" for r in mr_rows],
+          "| T [°C] | U [m/s] | 실험 [%] | CFD-ACE+ [%] | 1D [%] | 1D − 실험 [%p] | 1D − CFD-ACE+ [%p] |",
+          "|---|---|---|---|---|---|---|",
+          *[f"| {r[0]:.0f} | {r[1]:.3f} | {'-' if r[7] is None else f'{r[7]:.1f}'} | {r[2]:.1f} | {r[3]:.1f} | "
+            f"{'-' if r[8] is None else f'{r[8]:+.2f}'} | {r[4]:+.2f} |" for r in mr_rows],
+          "", ("- 실험: " + str(v(spec['validation']['microreactor']['experiment']['source'])) + " (사용자 digitizing). "
+               if spec['validation']['microreactor'].get('experiment') else "- 실험값 없음. ")
+          + ("판정: CFD-ACE+ 대비 (ace_pseudo_gas)." if v(kin['model']) == "ace_pseudo_gas"
+             else "chatterjee_coverage는 실험 대비 차이만 보고 (판정 없음)."),
           "", "## 5. 확인 필요한 가정·추정값", "", "| 항목 | 값 | 상태 | 비고 |", "|---|---|---|---|"]
     L += [f"| {a} | {b} | {c} | {d} |" for a, b, c, d in flags]
     L += ["", "## 6. 검증 메모", "",

@@ -1,0 +1,89 @@
+# =====================================================================
+# 계산 사양 (case_spec.yaml)
+# ---------------------------------------------------------------------
+# 단계 구분
+#   stage: flow      → 3-1단계: 유동만 (porousSimpleFoam + 비등방성 다공성)
+#   stage: reacting  → 3-2단계: 열·반응 (전용 솔버, 아직 미구현)
+# status: given(사용자 제공) / assumed(가정) / estimated(그림 등에서 추정)
+# 출처: Baek et al., "Numerical Investigation of Local Performance
+#       Degradation by Heat Loss in Full-scale Marine SCR Systems" (이하 논문)
+# =====================================================================
+
+meta:
+  name: flow_3layer_m7000   # 케이스 폴더 이름 (영문자로 시작, 03_cases/<name>/)
+  revision: 3
+  revision_note: "rev3: 입구 조건을 질량유량 기준으로 변경 (유량 범위 케이스 7000 kg/h). 덕트 직경·형상·격자·출력 설정은 flow_3layer(rev2)와 동일"
+  stage: flow
+  scenario: "1.6 MW 이중연료 엔진, LNG 50% 부하. 3단 촉매"
+
+mesh:
+  dir: ../02_mesh            # MESH_APPROVED 필요
+
+operating:
+  inlet_temperature_C: {value: 325, status: given}
+  inlet_mass_flow_kg_h: {value: 7000.0, status: assumed,
+                         note: "업체 데이터 없음. 1.6 MW 50% 부하 중속엔진 일반 범위 5,000~7,000 kg/h의 중간값"}
+  # 입구 속도는 직접 지정하지 않음: make_case.py가 ṁ / (ρ_in × A_in)으로 계산해 case_info.json에 기록
+  # (A_in: STL 입구 다각형 면적, 덕트 직경 0.4 m 가정은 유지). rev2까지는 inlet_velocity 35 m/s (given) 사용
+  outlet_pressure_gauge: {value: 0.0, status: assumed}
+  ambient_pressure: {value: 101325, status: assumed}
+
+gas:                         # 3-1단계는 입구 온도의 N2 물성으로 비압축 계산
+  balance: {value: N2, status: given}
+  composition_mole_fraction: # 3-2단계(반응)에서 사용
+    NO:  {value: 680.0e-6, status: given, note: "NOx 680 ppm을 NO로 취급 (NO2 무시, 논문과 동일)"}
+    NH3: {value: 680.0e-6, status: given, note: "ANR = 1.0"}
+    O2:  {value: 0.02, status: assumed, note: "논문 전체규모 계산값. 실제 LNG 엔진 배기 O2는 더 높을 수 있음"}
+    H2O: {value: 0.01, status: assumed, note: "논문 전체규모 계산값"}
+  properties:                # 입구 온도에서 계산 (make_case.py가 계산해 기록)
+    model: {value: "N2 ideal gas + Sutherland viscosity", status: assumed}
+
+wall_thermal:                # 3-2단계에서 사용
+  type: {value: convection, status: given}
+  h: {value: 10.0, status: given, note: "W/m2K, 논문 Case 4"}
+  T_ambient_K: {value: 300.0, status: given}
+
+turbulence:
+  model: {value: kOmegaSST, status: assumed, note: "민감도 시험은 이전 연구에서 수행 → 단일 모델 사용"}
+  inlet_intensity: 0.05
+  inlet_mixing_length_ratio: 0.07   # × 입구 덕트 직경
+  laminarize_porous: true           # 촉매 채널 내부는 층류(채널 Re ≈ 수백) → 다공성 영역 k를 작게 고정
+
+catalyst:
+  active_layers: {value: [catalyst_1, catalyst_2, catalyst_3], status: given,
+                  note: "3단 계산 (rev2, 사용자 요청). 2단 결과는 flow_2layer_avg"}
+  porosity: {value: 0.687, status: given, note: "개구율 68.7 % (논문 3.1절)"}
+  permeability_k: {value: 2.34e-7, status: given, note: "사용자 제공 원본 값 (L=300 mm)"}
+  drag_cF: {value: 2.3e-3, status: given, note: "사용자 제공 원본 값 (L=300 mm)"}
+  transverse_factor: {value: 1.0e+4, status: given, note: "가로(x,y) 저항 = 축(z) 저항 × 이 값"}
+  axial_direction: [0, 0, 1]
+  # OpenFOAM DarcyForchheimer 변환 (표면속도 기준): d = 1/k, f = 2 cF / sqrt(k)
+  # --- 이하 3-2단계(반응)용 ---
+  surface_to_volume: {value: 882.0, status: given, note: "m-1"}
+  cell_density_cpsi: {value: 45.9, status: given}
+  solid_conductivity: {value: "0.9558 - 2.09e-4*T", status: given, note: "W/mK, 논문 식 (15)"}
+  kinetics:                  # 논문 Table 1, 식 (11)-(14)
+    R1_ads: {A: 1.3e3}
+    R1_des: {A: 3.9e10, E_kJmol: 117.0, gamma: 0.51}
+    R2_oxi: {A: 1.1e9,  E_kJmol: 141.6, beta: 0.27}
+    R3_scr: {A: 2.2e8,  E_kJmol: 55.0,  beta: 0.27, K_LH: 8.2}
+
+solver:
+  application: porousSimpleFoam   # 비등방 다공성을 압력식에서 암시적으로 처리 (simpleFoam+fvOptions는 가로 저항 1e4배에서 수렴이 극도로 느림)
+  max_iterations: 3000
+  residual_target: 1.0e-5       # 솔버 종료 조건(residualControl)만. 판정에는 쓰지 않음 (2026-11-11 사용자 결정, PROGRESS 결정 기록)
+  monitor_window: 200          # 마지막 N 반복 동안 모니터 값 변동으로 수렴 판정
+  monitor_tolerance: 0.005     # 0.5 %
+  write_interval: 500
+  write_residual_fields: true  # solverInfo가 셀별 잔차 필드(initialResidual:*)를 저장 → 잔차가 큰 위치 확인용
+  field_average:               # 마지막 window회 동안 U, p 산술 평균 (UMean, pMean). check_case.py가 있으면 평균 필드로 판정
+    enabled: true
+    window: 1000
+    fields: [U, p]
+
+parallel:
+  n_procs: {value: 8, status: assumed, note: "P코어 8개. 23만 셀이면 4~8로 충분"}
+
+validation:                    # 비교 기준 (논문 3.2절, 1.6 MW 엔진 50% 부하 측정)
+  measured_NOx_conversion_range: [0.888, 0.997]   # 3-2단계에서 비교
+  paper_catalyst_velocity_range: [1.75, 3.0]      # m/s, 논문이 다공성 계수를 맞춘 채널 내부(물리) 속도 범위

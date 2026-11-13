@@ -57,6 +57,39 @@ def n2_properties(T, p):
     return rho, mu
 
 
+def mesh_patch_area(poly, patch):
+    """polyMesh(ASCII)에서 patch 면적 합 [m2] (면 중심 기준 삼각형 분할). 솔버가 보는 입구 면적과 같음."""
+    poly = pathlib.Path(poly)
+    bnd = poly.joinpath("boundary").read_text(encoding="utf-8")
+    m = re.search(rf"\b{re.escape(patch)}\s*\{{[^}}]*?nFaces\s+(\d+);[^}}]*?startFace\s+(\d+);", bnd)
+    if not m:
+        sys.exit(f"[ERROR] boundary에 patch {patch} 없음")
+    n, start = int(m.group(1)), int(m.group(2))
+
+    def body(name):  # FoamFile 헤더 다음의 'N ( ... )' 목록 줄들
+        txt = poly.joinpath(name).read_text(encoding="utf-8")
+        if re.search(r"format\s+binary", txt[:2000]):
+            sys.exit(f"[ERROR] {poly / name}이 binary 형식 → ASCII 격자 필요")
+        lines = txt.split("\n")
+        i = next(k for k, l in enumerate(lines) if l.strip() == "(")
+        return lines[i + 1:]
+    flines = body("faces")[start:start + n]
+    faces = [[int(x) for x in re.findall(r"\d+", l)[1:]] for l in flines]
+    need = sorted({q for f in faces for q in f})
+    plines = body("points")
+    P = {q: [float(x) for x in plines[q].strip("() ").split()] for q in need}
+    area = 0.0
+    for f in faces:
+        pts = [P[q] for q in f]
+        c = [sum(p[i] for p in pts) / len(pts) for i in range(3)]
+        sx = sy = sz = 0.0
+        for a, b in zip(pts, pts[1:] + pts[:1]):
+            u = [a[i] - c[i] for i in range(3)]; w = [b[i] - c[i] for i in range(3)]
+            sx += u[1] * w[2] - u[2] * w[1]; sy += u[2] * w[0] - u[0] * w[2]; sz += u[0] * w[1] - u[1] * w[0]
+        area += 0.5 * math.sqrt(sx * sx + sy * sy + sz * sz)
+    return area
+
+
 def has_results(case):
     return any(d.is_dir() and re.fullmatch(r"\d+(\.\d+)?", d.name) and d.name != "0" for d in case.iterdir()) \
         or any(case.glob("processor*"))
@@ -353,9 +386,17 @@ def main():
     p_amb = float(v(spec["operating"]["ambient_pressure"]))
     rho, mu = n2_properties(T, p_amb)
     nu = mu / rho
-    Vin = float(v(spec["operating"]["inlet_velocity"]))
+    # 입구 조건: 질량유량 기준 (2026-11-13 사용자 결정). 입구 속도 = ṁ / (ρ A_in), 직접 지정하지 않음
+    op = spec["operating"]
+    if "inlet_velocity" in op:
+        sys.exit("[ERROR] operating.inlet_velocity는 쓰지 않음 → operating.inlet_mass_flow_kg_h로 지정")
+    mdot_kg_h = float(v(op["inlet_mass_flow_kg_h"]))
     Din = info["inlet"]["diameter"]
-    A_in = math.pi * Din ** 2 / 4
+    A_nom = math.pi * Din ** 2 / 4
+    A_in = mesh_patch_area(poly, roles["inlet"])   # 격자 입구 patch 실제 면적 (snappy 다각형)
+    if not 0.98 * A_nom < A_in <= A_nom * 1.001:
+        sys.exit(f"[ERROR] STL 입구 면적 {A_in:.6f} m2가 원 면적 {A_nom:.6f} m2와 맞지 않음")
+    Vin = mdot_kg_h / 3600 / (rho * A_in)
     turb = spec["turbulence"]
     k_in = 1.5 * (turb["inlet_intensity"] * Vin) ** 2
     L = turb["inlet_mixing_length_ratio"] * Din
@@ -389,8 +430,9 @@ def main():
     case_info = {
         "name": name, "revision": spec["meta"]["revision"], "stage": "flow",
         "T_in_K": T, "rho": rho, "mu": mu, "nu": nu,
-        "inlet_velocity": Vin, "inlet_diameter": Din, "inlet_area": A_in,
-        "mass_flow_kg_h_nominal": rho * Vin * A_in * 3600,
+        "inlet_condition": "mass_flow",
+        "inlet_velocity": Vin, "inlet_diameter": Din, "inlet_area": A_in, "inlet_area_circle": A_nom,
+        "mass_flow_kg_h_nominal": mdot_kg_h,
         "k_in": k_in, "omega_in": om_in,
         "active_layers": active, "porosity": float(v(spec["catalyst"]["porosity"])),
         "porous_coeffs": porous, "monitor_planes": planes, "cell_size": h,
@@ -405,7 +447,7 @@ def main():
 
     print(f"[OK] 케이스 생성: 03_cases/{case}/")
     print(f"     N2 @ {T - 273.15:.0f} °C: rho {rho:.4f} kg/m3, mu {mu:.3e} Pa s, nu {nu:.3e} m2/s")
-    print(f"     입구 {Vin} m/s × D {Din} m → 질량유량 {case_info['mass_flow_kg_h_nominal']:.0f} kg/h")
+    print(f"     질량유량 {mdot_kg_h:.0f} kg/h → 입구 {Vin:.3f} m/s (A_in {A_in:.6f} m2 격자 입구 patch; 원 D {Din} m는 {A_nom:.6f})")
     print(f"     다공성 (축/가로): d {porous['d_axial']:.3e}/{porous['d_transverse']:.3e} 1/m2, "
           f"f {porous['f_axial']:.3f}/{porous['f_transverse']:.3e} 1/m")
     print(f"     활성 촉매층: {', '.join(active)}")

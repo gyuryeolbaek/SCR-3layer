@@ -28,7 +28,7 @@ description: SCR 열·화학반응 계산(3-2단계)을 만들고 실행하고 �
 ## 판정 기준 (check_reacting.py)
 - FAIL: 발산, 음수 농도, 결과 없음, 에너지 수지 오차 > 2 % (ṁcpΔT = 반응열 + 벽 열손실), (ace 모델) 마이크로리액터 재현 실패
 - WARN: 모니터(전환율·출구 온도) 미안정, 출구 전환율이 측정 범위(88.8~99.7 %) 밖, 1D 기준과 5 %p 이상 차이
-- chatterjee 모델의 마이크로리액터 비교는 참고용 (다른 모델이라 판정 없음)
+- 마이크로리액터 비교(4절)는 실험값(Koo et al. 2016 Fig. 8 fresh, `validation.microreactor.experiment`)과 CFD-ACE+ 값을 함께 보여줌. chatterjee 모델은 실험 대비 차이만 보고 (판정 없음), ace 모델은 CFD-ACE+ 대비로 판정
 
 ## 확인 대기 중인 항목 (보고서 5절에 자동 표시)
 - Chatterjee 원문 Table 6은 계수의 "대략적 크기"(정확한 회귀값 아님), E_ox는 원문 118 kJ/mol 사용 (Baek 논문은 141.6)

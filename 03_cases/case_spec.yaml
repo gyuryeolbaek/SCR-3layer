@@ -10,9 +10,9 @@
 # =====================================================================
 
 meta:
-  name: flow_3layer         # 케이스 폴더 이름 (영문자로 시작, 03_cases/<name>/)
-  revision: 2
-  revision_note: "rev2: 3단 촉매 (active_layers에 catalyst_3 추가). 그 외 물리·수치·출력 설정은 flow_2layer_avg(rev1)와 동일 (잔차 필드, 마지막 1000회 U·p 평균)"
+  name: flow_3layer_m6000   # 케이스 폴더 이름 (영문자로 시작, 03_cases/<name>/)
+  revision: 3
+  revision_note: "rev3: 입구 조건을 질량유량 기준으로 변경 (6,000 kg/h 기준). 덕트 직경·형상·격자·출력 설정은 flow_3layer(rev2)와 동일"
   stage: flow
   scenario: "1.6 MW 이중연료 엔진, LNG 50% 부하. 3단 촉매"
 
@@ -21,8 +21,10 @@ mesh:
 
 operating:
   inlet_temperature_C: {value: 325, status: given}
-  inlet_velocity: {value: 35.0, status: given,
-                   note: "입구 덕트 직경이 가정값(0.4 m)이라 질량유량도 가정에 묶임. 보고서의 질량유량 확인 필요. 입구 덕트 직경·질량유량 정보 없음. 사용자 결정으로 35 m/s 진행 (질량유량은 가정 직경 0.4 m에 따라 약 9,000 kg/h)"}
+  inlet_mass_flow_kg_h: {value: 6000.0, status: assumed,
+                         note: "업체 데이터 없음. 1.6 MW 50% 부하 중속엔진 일반 범위 5,000~7,000 kg/h의 중간값"}
+  # 입구 속도는 직접 지정하지 않음: make_case.py가 ṁ / (ρ_in × A_in)으로 계산해 case_info.json에 기록
+  # (A_in: STL 입구 다각형 면적, 덕트 직경 0.4 m 가정은 유지). rev2까지는 inlet_velocity 35 m/s (given) 사용
   outlet_pressure_gauge: {value: 0.0, status: assumed}
   ambient_pressure: {value: 101325, status: assumed}
 

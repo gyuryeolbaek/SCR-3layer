@@ -91,3 +91,12 @@ validation:
       - [430, 1.502, 97.9]
     tolerance_pct_point: 3.0   # ace_pseudo_gas 모델에만 적용 (A_SCR 2.2e8 기준 230 °C에서 약 2.7 %p)
     # chatterjee_coverage는 CFD-ACE+ 결과와의 비교만 보고 (판정 없음: 다른 모델이므로)
+    experiment:                # 같은 조건의 실험값 (fresh 촉매). chatterjee는 이 값 대비 차이를 보고 (판정 없음)
+      source: {value: "Koo et al. (2016) Figure 8, fresh", status: given, note: "사용자 digitizing"}
+      points:                  # [입구 온도 °C, 실험 NO 전환율 %]
+        - [230, 77.0]
+        - [260, 90.0]
+        - [300, 97.0]
+        - [350, 99.0]
+        - [400, 99.0]
+        - [430, 99.0]

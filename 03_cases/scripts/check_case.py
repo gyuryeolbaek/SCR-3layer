@@ -214,8 +214,14 @@ def main():
         mdot = abs(m_in[-1]) * rho
         note = " ← 입구 덕트 직경이 가정값" if any(f["item"].startswith("inlet_duct.diameter") and f["status"] != "given"
                                             for f in info.get("flags", [])) else ""
-        rec("INFO", "질량유량", f"{mdot:.3f} kg/s = {mdot * 3600:.0f} kg/h (입구 {ci['inlet_velocity']} m/s, "
-            f"D {ci['inlet_diameter']} m){note}")
+        if ci.get("inlet_condition") == "mass_flow":   # 질량유량 기준 입구 (2026-11-13~)
+            tgt = ci["mass_flow_kg_h_nominal"]
+            rec("INFO", "질량유량", f"{mdot:.3f} kg/s = {mdot * 3600:.0f} kg/h (지정 {tgt:.0f} kg/h, 차이 "
+                f"{(mdot * 3600 / tgt - 1) * 100:+.2f}%, 입구 {ci['inlet_velocity']:.3f} m/s, D {ci['inlet_diameter']} m) "
+                f"← 질량유량이 가정값 (case_spec operating.inlet_mass_flow_kg_h)")
+        else:
+            rec("INFO", "질량유량", f"{mdot:.3f} kg/s = {mdot * 3600:.0f} kg/h (입구 {ci['inlet_velocity']} m/s, "
+                f"D {ci['inlet_diameter']} m){note}")
     else:
         mdot = ci["mass_flow_kg_h_nominal"] / 3600
 
