@@ -1,0 +1,102 @@
+# =====================================================================
+# 열·반응 계산 사양 (reacting_spec.yaml) - 3-2단계
+# ---------------------------------------------------------------------
+# 유동은 확정된 유동 케이스(source_flow_case)의 결과(U, phi, nut)를 고정해서 사용.
+# 논문과 같이 비압축 정상 유동이므로 유동은 온도에 영향을 받지 않음 → 한 방향 결합.
+# 반응·열 모델: Baek et al. 논문 식 (4)-(14), Table 1
+# status: given(사용자/논문) / assumed(가정) / estimated(추정)
+# =====================================================================
+
+meta:
+  name: react_3layer_m5000
+  revision: 2
+  revision_note: "rev2 유량 범위 케이스 (유동 flow_3layer_m5000, 5,000 kg/h): react_3layer_m6000과 같고 다른 점만 표시. 반응·물성·입구 조성·벽 조건은 rev1과 동일"
+  scenario: "1.6 MW 이중연료 엔진, LNG 50% 부하. 3단 촉매, Chatterjee 반응 모델"
+
+source_flow_case: {value: flow_3layer_m5000, status: given,
+                   note: "확정된 3단 기준 유동 (질량유량 6,000 kg/h, 2026-11-13 확정). 촉매층(cellZone)과 입구 온도·밀도도 이 케이스에서 가져옴"}
+
+gas:
+  inlet_mole_fraction:          # 키는 따옴표 필수 (YAML에서 NO는 false로 읽힘)
+    "NO":  {value: 680.0e-6, status: given, note: "NOx 680 ppm을 NO로 취급"}
+    "NH3": {value: 680.0e-6, status: given, note: "ANR 1.0"}
+    "O2":  {value: 0.02, status: assumed, note: "논문 전체규모 계산값"}
+    "H2O": {value: 0.01, status: assumed, note: "논문 전체규모 계산값"}
+    # 나머지 N2 (given)
+  M_mix_gmol: {value: 27.99, status: assumed, note: "위 조성 + N2 잔여로 계산"}
+  cp: {value: 1075.0, status: assumed, note: "J/kgK, N2 @ 600 K"}
+  lambdaF: {value: 0.044, status: assumed, note: "W/mK, N2 @ 600 K"}
+  Dm: {value: 5.4e-5, status: assumed, note: "m2/s, NO·NH3의 N2 중 분자확산계수 @ 600 K"}
+  Prt: 0.85
+  Sct: 0.7
+
+catalyst:
+  surface_to_volume: {value: 882.0, status: given, note: "m-1"}
+  solid_conductivity:          # lambda_S = a + b*T  (논문 식 15)
+    a: {value: 0.9558, status: given}
+    b: {value: -2.09e-4, status: given}
+    T_unit: {value: K, status: given, note: "사용자 마이크로리액터 표의 열전도도 값으로 확인 (230 °C → 0.85)"}
+  kinetics:
+    # model: chatterjee_coverage → Chatterjee et al. (SAE 2005-01-0965) 원문 형태 (기본)
+    #          NH3 피복률 θ(0~1)는 촉매에 머묾. 정상상태에서 흡착점 수지로 셀마다 계산 (Ω는 상쇄)
+    #          속도는 촉매 부피당 [mol/m3_cat/s], 기상 농도 C [mol/m3] 사용
+    #          r_ads = k C_NH3 (1-θ)                     k [1/s]
+    #          r_des = k exp(-E(1-γθ)/RT) θ              k [mol/m3/s]
+    #          r_ox  = k exp(-E/RT) (P_O2/0.02)^β θ       k [mol/m3/s]
+    #          r_NO  = k exp(-E/RT) C_NO θ/(1+K θ/(1-θ)) (P_O2/0.02)^β   k [1/s]
+    #        ace_pseudo_gas → Baek et al. 논문의 CFD-ACE+ 서브루틴 형태 (NH3*를 이동 가상 화학종으로)
+    #          같은 숫자를 몰분율·표면적(×sV) 기준으로 해석. 논문 재현 시 사용 (E_ox 141.6과 함께)
+    model: {value: chatterjee_coverage, status: given, note: "사용자 결정: Chatterjee 원문 형태로 구현"}
+    R1_ads: {A: 1.3e+3}
+    R1_des: {A: 3.9e+10, E_kJmol: 117.0, gamma: 0.51}
+    R2_oxi: {A: 1.1e+9,  E_kJmol: 118.0, beta: 0.27}
+    R3_scr: {A: 2.2e+8,  E_kJmol: 55.0,  beta: 0.27, K_LH: 8.2}
+    source: {value: "Chatterjee et al. Appendix B Table 6", status: estimated,
+             note: "원문 표는 회귀값의 '대략적 크기(order of magnitude)'. Baek 논문은 E_ox를 141.6 kJ/mol(118의 1.2배)로 수정"}
+    solid_fraction: {value: 0.313, status: assumed,
+                     note: "chatterjee: 촉매 부피당 속도를 반응기 부피당으로 환산하는 계수 = 1-ε. 확인 필요"}
+    adsorption_capacity_mmol_per_kg: {value: 200, status: given,
+                                       note: "Chatterjee 원문 Ω. 정상상태 계산에서는 상쇄되어 사용 안 함 (비정상 확장용)"}
+    dH2_kJmol: {value: 316.8, status: assumed, note: "NH3 산화 반응열, NH3 1 mol당 (표준 생성 엔탈피)"}
+    dH3_kJmol: {value: 407.1, status: assumed, note: "표준 SCR 반응열, NO 1 mol당 (표준 생성 엔탈피)"}
+
+wall_thermal:
+  h: {value: 10.0, status: given, note: "W/m2K (논문 Case 4)"}
+  T_ambient_K: {value: 300.0, status: given}
+
+solver:
+  application: scrSteadyFoam
+  max_iterations: 3000
+  residual: 1.0e-4             # NH3* 잔차는 강한 결합(stiff) 때문에 ~1e-5에서 멈춤. 판정은 모니터 안정성 위주
+  dEta: 1.0e-6                 # 반복당 출구 전환율 변화
+  n_stable: 50                 # 위 두 조건이 연속으로 만족해야 하는 반복 수
+  relaxation: 0.9
+
+parallel:
+  n_procs: {value: 6, status: assumed}
+
+validation:
+  measured_NOx_conversion_range: [0.888, 0.997]   # 1.6 MW 엔진 50 % 부하 측정 (논문 3.2절)
+  microreactor:                # 반응식 해석 검증용: 저자 CFD-ACE+ 2D 마이크로리액터 결과 (Koo et al. 조건)
+    inlet_mole_fraction: {"NO": 400.0e-6, "NH3": 400.0e-6, "O2": 0.10, "H2O": 0.08}   # 잔여 He
+    area_velocity_m_h: 25.0
+    normal_velocity: 0.5833    # m/s, U_N = SV·L/3600
+    catalyst_length: {value: 0.0952, status: estimated, note: "U_N과 면적속도 25 m/h, sV 882에서 역산 (L = U_N·3600/(AV·sV))"}
+    points:                    # [입구 온도 °C, 실제 입구 속도 m/s, CFD-ACE+ NO 전환율 %]
+      - [230, 1.075, 80.0]
+      - [260, 1.139, 89.4]
+      - [300, 1.224, 95.2]
+      - [350, 1.331, 97.8]
+      - [400, 1.438, 98.3]
+      - [430, 1.502, 97.9]
+    tolerance_pct_point: 3.0   # ace_pseudo_gas 모델에만 적용 (A_SCR 2.2e8 기준 230 °C에서 약 2.7 %p)
+    # chatterjee_coverage는 CFD-ACE+ 결과와의 비교만 보고 (판정 없음: 다른 모델이므로)
+    experiment:                # 같은 조건의 실험값 (fresh 촉매). chatterjee는 이 값 대비 차이를 보고 (판정 없음)
+      source: {value: "Koo et al. (2016) Figure 8, fresh", status: given, note: "사용자 digitizing"}
+      points:                  # [입구 온도 °C, 실험 NO 전환율 %]
+        - [230, 77.0]
+        - [260, 90.0]
+        - [300, 97.0]
+        - [350, 99.0]
+        - [400, 99.0]
+        - [430, 99.0]

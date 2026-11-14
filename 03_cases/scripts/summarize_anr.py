@@ -7,7 +7,7 @@ ANR 범위 반응 케이스 비교표 (3-2단계)
 사용법 (03_cases에서): python3 scripts/summarize_anr.py [--out react_3layer_anr_summary.md] case1 case2 ...
   ANR은 각 보고서 머리말의 입구 NO·NH3 ppm으로 계산한다.
 """
-import argparse, pathlib, re, sys
+import argparse, json, pathlib, re, sys
 import yaml
 
 NUM = r"([-+]?\d+(?:\.\d+)?)"
@@ -17,6 +17,9 @@ def parse(case):
     md = (pathlib.Path(case) / "report" / "reacting_report.md").read_text(encoding="utf-8")
     g = lambda pat: re.search(pat, md)
     r = {"case": case}
+    ci = json.loads((pathlib.Path(case) / "case_info.json").read_text(encoding="utf-8"))
+    r["flow"] = pathlib.Path(ci["source_flow_case"]).name
+    r["mdot_kg_h"] = ci["mass_flow_kg_s"] * 3600
     m = g(r"\*\*판정: ([^*]+)\*\*")
     r["verdict"] = m.group(1).strip() if m else "?"
     m = g(rf"NO {NUM} ppm, NH3 {NUM} ppm")
@@ -51,26 +54,36 @@ def main():
     ap.add_argument("cases", nargs="+")
     ap.add_argument("--spec", default="reacting_spec.yaml")
     ap.add_argument("--out", default="react_3layer_anr_summary.md")
+    ap.add_argument("--title", default="3단 반응 계산 ANR 비교 (react_3layer)")
+    ap.add_argument("--no-anr-range", action="store_true", help="ANR 구간 계산 생략 (ANR이 같은 유량 비교표)")
+    ap.add_argument("--sort", choices=["anr", "mdot"], default="anr")
     a = ap.parse_args()
     lo, hi = yaml.safe_load(open(a.spec, encoding="utf-8"))["validation"]["measured_NOx_conversion_range"]
     lo, hi = lo * 100, hi * 100
-    rows = sorted((parse(c) for c in a.cases), key=lambda x: x["ANR"])
+    rows = sorted((parse(c) for c in a.cases), key=lambda x: (x["ANR"], x["mdot_kg_h"]) if a.sort == "anr"
+                  else (x["mdot_kg_h"], x["ANR"]))
     layers = sorted({k for x in rows for k in x["layers"]})
 
-    L = ["# 3단 반응 계산 ANR 비교 (react_3layer)", "",
-         "- 유동: flow_3layer (고정), 반응 모델 chatterjee_coverage, 입구 325 °C, NO 680 ppm, 벽 h 10 W/m²K",
-         "- 케이스 간 차이는 입구 NH3 (= ANR × 680 ppm) 하나뿐",
+    flows = ", ".join(dict.fromkeys(f"{x['flow']} ({x['mdot_kg_h']:.0f} kg/h)" for x in rows))
+    L = [f"# {a.title}", "",
+         f"- 유동 (고정): {flows}. 반응 모델 chatterjee_coverage, 입구 325 °C, NO 680 ppm, 벽 h 10 W/m²K",
+         "- 케이스 간 차이: " + ("질량유량(유동 케이스)" if a.no_anr_range else "입구 NH3 (= ANR × 680 ppm)"),
          f"- 측정 NOx 전환율 범위 {lo:.1f}~{hi:.1f} % (1.6 MW 엔진 50 % 부하, 시간 변동). 측정 ANR은 모름", "",
          "## 1. 케이스 비교", "",
-         "| 케이스 | ANR | NH3 입구 [ppm] | 출구 η_NO [%] | " + " | ".join(f"{l} 끝 η [%]" for l in layers)
+         "| 케이스 | 질량유량 [kg/h] | ANR | NH3 입구 [ppm] | 출구 η_NO [%] | " + " | ".join(f"{l} 끝 η [%]" for l in layers)
          + " | 출구 NH3 슬립 [ppm] | 출구 T [°C] | 벽 열손실 [kW] | 측정 범위 | 판정 |",
-         "|---|---|---|---|" + "---|" * len(layers) + "---|---|---|---|---|"]
+         "|---|---|---|---|---|" + "---|" * len(layers) + "---|---|---|---|---|"]
     for x in rows:
         inr = "✅ 안" if lo <= x["eta_out"] <= hi else ("▲ 위" if x["eta_out"] > hi else "▼ 아래")
-        L.append(f"| {x['case']} | {x['ANR']:.2f} | {x['NH3_in']:.0f} | {x['eta_out']:.2f} | "
+        L.append(f"| {x['case']} | {x['mdot_kg_h']:.0f} | {x['ANR']:.2f} | {x['NH3_in']:.0f} | {x['eta_out']:.2f} | "
                  + " | ".join(f"{x['layers'][l][0]:.2f}" if l in x["layers"] else "-" for l in layers)
                  + f" | {x['slip']:.2f} | {x['T_out']:.2f} | {x['Q_wall'] / 1e3:.2f} | {inr} | {x['verdict']} |")
 
+    if a.no_anr_range:
+        L += ["", "## 2. 솔버 종료", ""] + [f"- {x['case']}: {x['term']}" for x in rows]
+        pathlib.Path(a.out).write_text("\n".join(L) + "\n", encoding="utf-8")
+        print("\n".join(L))
+        return
     a_lo, m_lo = anr_at(rows, lo)
     a_hi, m_hi = anr_at(rows, hi)
     fmt = lambda v, m: ("?" if v is None else f"{v:.3f}") + f" ({m})"

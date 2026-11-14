@@ -1,0 +1,131 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2606                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _481094f-20260618 OPENFOAM=2606 version=2606
+Arch   : "LSB;label=32;scalar=64"
+Exec   : decomposePar -force
+Date   : Nov 13 2026
+Time   : 18:47:31
+Host   : grb-CRFL
+PID    : 398895
+I/O    : uncollated
+Case   : /home/grb_crfl/work/SCR/3layer/03_cases/react_3layer_m6000_anr105
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+memory pool : not available
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+
+--> FOAM Warning : allowSystemOperations : Allowing user-supplied system call operations.
+                   This can be a security risk if running untrusted cases
+                   through e.g. 'coded' on-the-fly-compilation functionality.
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+
+
+Decomposing mesh
+
+Create mesh
+
+Calculating distribution of cells
+Decomposition method scotch [6] (region region0)
+
+Finished decomposition in 1.25 s
+
+Calculating original mesh data
+
+Distributing cells to processors
+
+Distributing faces to processors
+
+Distributing points to processors
+
+Constructing processor meshes
+Reading hexRef8 data : cellLevel
+Reading hexRef8 data : pointLevel
+Reading hexRef8 data : level0Edge
+
+Processor 0
+    Number of cells = 38591
+    Number of points = 44786
+    Number of faces shared with processor 1 = 560
+    Number of faces shared with processor 2 = 685
+    Number of processor patches = 2
+    Number of processor faces = 1245
+    Number of boundary faces = 6925
+
+Processor 1
+    Number of cells = 38874
+    Number of points = 46858
+    Number of faces shared with processor 0 = 560
+    Number of faces shared with processor 2 = 1612
+    Number of faces shared with processor 4 = 63
+    Number of faces shared with processor 5 = 469
+    Number of processor patches = 4
+    Number of processor faces = 2704
+    Number of boundary faces = 6347
+
+Processor 2
+    Number of cells = 39323
+    Number of points = 46790
+    Number of faces shared with processor 0 = 685
+    Number of faces shared with processor 1 = 1612
+    Number of faces shared with processor 4 = 799
+    Number of faces shared with processor 5 = 289
+    Number of processor patches = 4
+    Number of processor faces = 3385
+    Number of boundary faces = 6023
+
+Processor 3
+    Number of cells = 38591
+    Number of points = 46584
+    Number of faces shared with processor 4 = 837
+    Number of faces shared with processor 5 = 631
+    Number of processor patches = 2
+    Number of processor faces = 1468
+    Number of boundary faces = 6494
+
+Processor 4
+    Number of cells = 39369
+    Number of points = 46520
+    Number of faces shared with processor 1 = 63
+    Number of faces shared with processor 2 = 799
+    Number of faces shared with processor 3 = 837
+    Number of faces shared with processor 5 = 1215
+    Number of processor patches = 4
+    Number of processor faces = 2914
+    Number of boundary faces = 5772
+
+Processor 5
+    Number of cells = 39136
+    Number of points = 46603
+    Number of faces shared with processor 1 = 469
+    Number of faces shared with processor 2 = 289
+    Number of faces shared with processor 3 = 631
+    Number of faces shared with processor 4 = 1215
+    Number of processor patches = 4
+    Number of processor faces = 2604
+    Number of boundary faces = 6069
+
+Number of processor faces = 7160
+Max number of cells = 39369 (0.9962203485% above average 38980.66667)
+Max number of processor patches = 4 (20% above average 3.333333333)
+Max number of faces between processors = 3385 (41.82960894% above average 2386.666667)
+
+
+Time = 0
+
+Processor 0: field transfer
+Processor 1: field transfer
+Processor 2: field transfer
+Processor 3: field transfer
+Processor 4: field transfer
+Processor 5: field transfer
+
+End
+
